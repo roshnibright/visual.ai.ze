@@ -37,14 +37,14 @@ Provide your response as a JSON object with the following structure:
 
     allWordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
 
-**Previous Context:** "{insert_previous_words_string}"
-**Current Word:** "{insert_current_word_string}"
+**Previous Context:** "{input_text}"
+**Current Word:** "{recent_word}"
 
 **Task:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
 - Full sentence/paragraph context and meaning from previous words
 - Semantic relationships between previous context and current word completion
 - Common English language patterns and vocabulary
-- Potential typos in the current word (users may have motor difficulties)
+- Potential typos (users may have motor difficulties)
 - Word completion possibilities for the current word being typed
 - Sentence structure, grammar, and semantic context from preceding words
 - Punctuation and spacing appropriateness based on sentence flow
@@ -68,7 +68,8 @@ Provide your response as a JSON object with the following structure:
 - Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
 - Probabilities should sum to approximately 1.0 across all reasonable next characters
 - Order predictions from highest to lowest probability
-- Include 5 or less characters """
+- Include 5 or less characters 
+ """
 
     return allWordPrompt
     
@@ -87,7 +88,41 @@ Rules:
 Respond with just the character(s) or "UNCLEAR", nothing else. """
 
 def word_prompt(input_text, word_options):
-    return f"""Given this text fragment: "{input_text}"
+    wordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next words to help users with motor impairments type more efficiently. You may only use words from a given list of words. 
+
+**Current text:** "{input_text}"
+
+**Words list:** "{word_options}"
+
+**Instructions:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+- Full sentence/paragraph context and meaning from previous words
+- Semantic relationships between previous context and current word completion
+- Common English language patterns and vocabulary
+- Potential typos (users may have motor difficulties)
+- Word completion possibilities for the current word being typed
+- Sentence structure, grammar, and semantic context from preceding words
+- Punctuation and spacing appropriateness based on sentence flow
+- Common word sequences and phrases that follow the established context
+
+**Output format (JSON):**
+```json
+{
+  "predictions": [
+    {"word": "the", "confidence": 0.95},
+    {"word": "and", "confidence": 0.87},
+    {"word": "is", "confidence": 0.75}
+  ],
+  "context": "brief explanation of reasoning if helpful"
+}
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next words
+- Order predictions from highest to lowest probability
+- Include 5 or less words """
+    return wordPrompt
 
 
 
