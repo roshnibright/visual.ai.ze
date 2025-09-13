@@ -2,10 +2,10 @@
 
 
 def char_prompt(input_text, recent_word):
-    res = f"""
+    curWordOnlyPrompt = f"""
     You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
 
-**Input:** "{input_text}"
+**Input:** "{recent_word}"
 
 **Task:** Analyze the input text and provide probability rankings for the next character, accounting for:
 - Common English language patterns and vocabulary
@@ -35,7 +35,42 @@ Provide your response as a JSON object with the following structure:
 - Include 5 or less characters 
 """
 
-    return res
+    allWordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
+
+**Previous Context:** "{insert_previous_words_string}"
+**Current Word:** "{insert_current_word_string}"
+
+**Task:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+- Full sentence/paragraph context and meaning from previous words
+- Semantic relationships between previous context and current word completion
+- Common English language patterns and vocabulary
+- Potential typos in the current word (users may have motor difficulties)
+- Word completion possibilities for the current word being typed
+- Sentence structure, grammar, and semantic context from preceding words
+- Punctuation and spacing appropriateness based on sentence flow
+- Common word sequences and phrases that follow the established context
+
+**Output Format:**
+Provide your response as a JSON object with the following structure:
+```json
+{
+  "predictions": [
+    {"character": "e", "probability": 0.35},
+    {"character": "a", "probability": 0.18},
+    {"character": " ", "probability": 0.15},
+    {"character": "s", "probability": 0.12}
+  ]
+}
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next characters
+- Order predictions from highest to lowest probability
+- Include 5 or less characters """
+
+    return allWordPrompt
     
     
 

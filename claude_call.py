@@ -44,8 +44,10 @@ def char_prediction(input_text):
 
         result = response.content[0].text.strip()
 
-        if result == "UNCLEAR":
-            return []
+        # if result == "UNCLEAR":
+        #     return []
+
+        #The prompt wont do this -F
 
         if len(result) == 1:
             return [result]
