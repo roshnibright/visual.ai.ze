@@ -2,38 +2,6 @@
 
 
 def char_prompt(input_text, recent_word):
-    curWordOnlyPrompt = f"""
-    You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
-
-**Input:** "{recent_word}"
-
-**Task:** Analyze the input text and provide probability rankings for the next character, accounting for:
-- Common English language patterns and vocabulary
-- Potential typos in the input (users may have motor difficulties)
-- Word completion possibilities
-- Sentence structure and grammar
-- Punctuation and spacing appropriateness
-
-**Output Format:**
-Provide your response as a JSON object with the following structure:
-```json
-{
-  "predictions": [
-    {"character": "e", "probability": 0.35},
-    {"character": "a", "probability": 0.18},
-    {"character": " ", "probability": 0.15},
-    {"character": "s", "probability": 0.12}
-  ]
-}
-
-**Requirements:**
-
-- Use probability values between 0.0 and 1.0
-- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
-- Probabilities should sum to approximately 1.0 across all reasonable next characters
-- Order predictions from highest to lowest probability
-- Include 5 or less characters 
-"""
 
     allWordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
 
@@ -50,17 +18,18 @@ Provide your response as a JSON object with the following structure:
 - Punctuation and spacing appropriateness based on sentence flow
 - Common word sequences and phrases that follow the established context
 
-**Output Format:**
-Provide your response as a JSON object with the following structure:
-```json
-{
-  "predictions": [
-    {"character": "e", "probability": 0.35},
-    {"character": "a", "probability": 0.18},
-    {"character": " ", "probability": 0.15},
-    {"character": "s", "probability": 0.12}
-  ]
-}
+**Example:**
+Previous Context: "I need to go to the"
+Current Word: "sto"
+
+Expected Output (Python Array):
+```python array of tuples 
+[
+    ("r", 0.65),
+    ("p", 0.20),
+    ("v", 0.15)
+]
+
 
 **Requirements:**
 
@@ -104,16 +73,14 @@ def word_prompt(input_text, word_options):
 - Punctuation and spacing appropriateness based on sentence flow
 - Common word sequences and phrases that follow the established context
 
-**Output format (JSON):**
-```json
-{
-  "predictions": [
-    {"word": "the", "confidence": 0.95},
-    {"word": "and", "confidence": 0.87},
-    {"word": "is", "confidence": 0.75}
-  ],
-  "context": "brief explanation of reasoning if helpful"
-}
+**Output format (Python Array):**
+```python array of tuples
+[
+    ("the", 0.95),
+    ("and", 0.87),
+    ("is", 0.75)
+]
+
 
 **Requirements:**
 
