@@ -1,19 +1,22 @@
 #ALL TO BE REPLACED WITH FIONAS PROMPTS
 
 
-def char_prompt(input_text, recent_word):
+def char_prompt(input_text):
 
-    allWordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
+    prompt = f"""You are helping to create a keyboard that dynamically resizes keys based on letter probability.
+Your task is to predict the most likely next characters so we can make them bigger on our keyboard.
 
 **Previous Context:** "{input_text}"
-**Current Word:** "{recent_word}"
 
-**Task:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+**Task:** Analyze both the previous context and current word being typed (at end of the context) to provide confidence values for the next character. For each of the 5 most likely characters, assign a confidence score from 0-1 representing how confident you are that the following character is the next one to be typed.
+- If you are very unconfident about the next character, your confidences should be low
+- It is fully acceptable to return an empty list if you are unconfident about the next character
+- The "delete" key and "space" key are valid choices to list
+Do this using:
+- Word completion possibilities for the current word being typed
 - Full sentence/paragraph context and meaning from previous words
 - Semantic relationships between previous context and current word completion
 - Common English language patterns and vocabulary
-- Potential typos (users may have motor difficulties)
-- Word completion possibilities for the current word being typed
 - Sentence structure, grammar, and semantic context from preceding words
 - Punctuation and spacing appropriateness based on sentence flow
 - Common word sequences and phrases that follow the established context
@@ -23,87 +26,96 @@ Previous Context: "I need to go to the"
 Current Word: "sto"
 
 Expected Output (Python Array):
-```python array of tuples 
+```python array of tuples
 [
-    ("r", 0.65),
-    ("p", 0.20),
-    ("v", 0.15)
+    ("r", 0.80),
+    ("p", 0.10),
 ]
+
+This is because "store" or "storage" are very likely to follow. "Stop" is also a possibility, but it is not as likely.
+
+
+**Example 2:**
+Previous Context: "I am going to eat a"
+Current Word: ""
+
+Expected Output (Python Array):
+```python array of tuples
+[]
+
+This is because there is no clear next character to predict.
 
 
 **Requirements:**
 
-- Use probability values between 0.0 and 1.0
-- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
-- Probabilities should sum to approximately 1.0 across all reasonable next characters
+- Use confidence values between 0.0 and 1.0
 - Order predictions from highest to lowest probability
-- Include 5 or less characters 
+- Include 5 or fewer characters
+- You must return a python array of tuples with (character, confidence)
+
  """
 
-    return allWordPrompt
-    
-    
+    return prompt
 
-"""
-The text appears to end mid-word. Based on the context of the sentence, what is the most likely next character(s) to complete the current word?
 
-Rules:
-1. If there's one very obvious next character, return just that character
-2. If there are multiple reasonable options (2-4), list them all
-3. If it's unclear or could be many different characters, return "UNCLEAR"
-4. Only consider single characters, not full words
-5. Consider common English words and grammar
 
-Respond with just the character(s) or "UNCLEAR", nothing else. """
 
 def word_prompt(input_text, word_options):
-    wordPrompt = f"""You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next words to help users with motor impairments type more efficiently. You may only use words from a given list of words. 
+    prompt = f"""You are helping to create a talker that dynamically resizes keys based on letter probability. Each key has one of the word in the word_options array, which you will be provided with.
+Your task is to predict the most likely next words so we can make them bigger on our talker.
 
 **Current text:** "{input_text}"
 
-**Words list:** "{word_options}"
+**word_options:** "{word_options}"
 
-**Instructions:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+**Instructions:** Analyze the previous context word options being presented to provide probability rankings for the next word.
+- If you are very unconfident about the next word, your confidences should be low
+- It is fully acceptable to return an empty list if you are fully unconfident about the next word
+Account for:
 - Full sentence/paragraph context and meaning from previous words
 - Semantic relationships between previous context and current word completion
 - Common English language patterns and vocabulary
 - Potential typos (users may have motor difficulties)
-- Word completion possibilities for the current word being typed
+- Which of the words might make sense in the context of the preceding context/paragraph
 - Sentence structure, grammar, and semantic context from preceding words
 - Punctuation and spacing appropriateness based on sentence flow
 - Common word sequences and phrases that follow the established context
 
 **Output format (Python Array):**
+word_options: ["football", "cookie", "pizza", "chair", "window"]
+input_text: "For dessert, I am going to eat a"
+
+Expected Output (Python Array):
 ```python array of tuples
 [
-    ("the", 0.95),
-    ("and", 0.87),
-    ("is", 0.75)
+    ("cookie", 0.90),
+    ("pizza", 0.40),
 ]
+
+This is because "cookie" is quite likely to follow given the preceding context, but pizza is a food and there is a possibility that a human could eat pizza for dessert.
+
+
+word_options: ["football", "cookie", "pizza", "chair", "window"]
+input_text: "When I grow up, I want to be a "
+
+Expected Output (Python Array):
+```python array of tuples
+[
+    ("football", 0.70),
+    ("cookie", 0.70),
+    ("pizza", 0.70),
+    ("chair", 0.70),
+    ("window", 0.70),
+]
+
+This is because any of these options are actually possible. You could be a football coach, cookie baker... etc
 
 
 **Requirements:**
 
-- Use probability values between 0.0 and 1.0
-- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
-- Probabilities should sum to approximately 1.0 across all reasonable next words
+- Use condifence values between 0.0 and 1.0
 - Order predictions from highest to lowest probability
-- Include 5 or less words """
-    return wordPrompt
-
-
-
+- Include 5 or fewer words
+- You must return a python array of tuples with (word, confidence)
 """
-From the following list of words, which word(s) would most naturally come next to complete the sentence or phrase?
-
-Available words: {word_options}
-
-Rules:
-1. Consider the context and grammar of the sentence
-2. Return the most likely word(s) from the list only
-3. If multiple words are equally likely, list up to 3 options
-4. If none of the words fit well, return "NONE"
-5. Only return words that are in the provided list
-
-Respond with just the word(s) from the list or "NONE", nothing else.
-"""
+    return prompt

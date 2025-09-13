@@ -1,5 +1,6 @@
 import os
 import re
+import ast
 from dotenv import load_dotenv
 import anthropic
 from prompts import char_prompt, word_prompt
@@ -25,14 +26,10 @@ def char_prediction(input_text):
     if not input_text or not input_text.strip():
         return []
 
-    words = input_text.strip().split()
-
-    last_word = words[-1]
-
     if input_text.endswith((' ', '.', '!', '?', ',', ';', ':')):
         return []
 
-    prompt = char_prompt(input_text, last_word)
+    prompt = char_prompt(input_text)
     try:
         response = client.messages.create(
             model="claude-3-haiku-20240307",
@@ -43,11 +40,7 @@ def char_prediction(input_text):
         )
 
         result = response.content[0].text.strip()
-
-        # if result == "UNCLEAR":
-        #     return []
-
-        #The prompt wont do this -F
+        result = ast.literal_eval(result)
 
         if len(result) == 1:
             return [result]
