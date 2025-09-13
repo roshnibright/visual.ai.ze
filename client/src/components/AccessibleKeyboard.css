@@ -295,10 +295,33 @@
   justify-content: center;
   margin-bottom: 12px;
   gap: 8px;
+  align-items: center; /* Center keys vertically within the row */
 }
 
 .keyboard-row:last-child {
   margin-bottom: 0;
+}
+
+.punctuation-keys {
+  margin-bottom: 8px;
+  gap: 6px;
+}
+
+.punctuation-keys .key {
+  width: 45px;
+  height: 45px;
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+.special-keys {
+  gap: 12px;
+}
+
+.special-keys .key {
+  width: 100px;
+  height: 60px;
+  font-size: 1.2rem;
 }
 
 /* Key Styles */
@@ -310,8 +333,8 @@
   padding: 16px 20px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 60px;
-  min-height: 60px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
