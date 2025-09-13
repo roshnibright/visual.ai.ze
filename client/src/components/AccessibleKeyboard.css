@@ -1,0 +1,652 @@
+/* Modern Google/Apple-inspired design */
+.accessible-keyboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #f8f9fa;
+}
+
+.accessible-keyboard-container.dark-mode {
+  background: #0a0a0a;
+  color: #ffffff;
+}
+
+.accessible-keyboard-container.light-mode {
+  background: #f8f9fa;
+  color: #1a1a1a;
+}
+
+/* Header Controls */
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 32px;
+  padding: 0 16px;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.dark-mode .app-title {
+  background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: #6b7280;
+  letter-spacing: 0.01em;
+}
+
+.dark-mode .app-subtitle {
+  color: #9ca3af;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Modern Button Styles */
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mode-toggle:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mode-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mode-toggle.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.dark-mode .mode-toggle {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+  color: #e5e7eb;
+}
+
+.dark-mode .mode-toggle:hover {
+  background: rgba(31, 41, 55, 1);
+}
+
+.dark-mode .mode-toggle.active {
+  background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+  color: white;
+}
+
+.mode-icon {
+  font-size: 16px;
+}
+
+.mode-label {
+  font-weight: 500;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.dark-mode .theme-toggle {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.dark-mode .theme-toggle:hover {
+  background: rgba(31, 41, 55, 1);
+}
+
+.theme-icon {
+  font-size: 18px;
+}
+
+/* Text Display */
+.text-display {
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark-mode .text-display {
+  background: rgba(17, 24, 39, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.text-input {
+  width: 100%;
+  min-height: 160px;
+  padding: 24px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  line-height: 1.6;
+  resize: vertical;
+  font-family: inherit;
+  background: transparent;
+  color: #1a1a1a;
+  font-weight: 400;
+}
+
+.text-input:focus {
+  box-shadow: inset 0 0 0 2px #667eea;
+}
+
+.text-input[readonly] {
+  background: rgba(0, 0, 0, 0.02);
+  cursor: default;
+}
+
+.text-input[readonly]:focus {
+  box-shadow: inset 0 0 0 2px #9ca3af;
+}
+
+.dark-mode .text-input {
+  color: #f9fafb;
+}
+
+.dark-mode .text-input:focus {
+  box-shadow: inset 0 0 0 2px #64b5f6;
+}
+
+.prediction-display {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(248, 250, 252, 0.5);
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.dark-mode .prediction-display {
+  background: rgba(31, 41, 55, 0.5);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.prediction-group {
+  margin-bottom: 8px;
+}
+
+.prediction-label {
+  font-weight: 600;
+  color: #6b7280;
+  margin-right: 12px;
+  font-size: 14px;
+}
+
+.dark-mode .prediction-label {
+  color: #9ca3af;
+}
+
+.prediction-item {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6px 12px;
+  margin: 4px 6px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.dark-mode .prediction-item {
+  background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+  box-shadow: 0 2px 4px rgba(100, 181, 246, 0.3);
+}
+
+/* Keyboard */
+.keyboard {
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 1200px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+}
+
+.dark-mode .keyboard {
+  background: rgba(17, 24, 39, 0.9);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.keyboard-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Key Styles */
+.key {
+  border-radius: 12px;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 60px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+.key:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.key:active {
+  transform: translateY(0) scale(0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.key.focused {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transform: scale(1.05);
+}
+
+.key.focused:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Dark mode key styles */
+.dark-mode .key {
+  background: rgba(31, 41, 55, 0.8);
+  border-color: rgba(75, 85, 99, 0.3);
+  color: #e5e7eb;
+}
+
+.dark-mode .key:hover {
+  background: rgba(31, 41, 55, 1);
+}
+
+.dark-mode .key.focused {
+  background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
+}
+
+.dark-mode .key.focused:hover {
+  background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+}
+
+/* Key size variations */
+.key.normal {
+  flex: 1;
+  max-width: 80px;
+}
+
+.key.medium {
+  flex: 1.5;
+  max-width: 120px;
+}
+
+.key.large {
+  flex: 4;
+  max-width: 300px;
+}
+
+/* Special styling for space key */
+.keyboard-row:last-child .key.large {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.keyboard-row:last-child .key.large:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.dark-mode .keyboard-row:last-child .key.large {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.dark-mode .keyboard-row:last-child .key.large:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);
+}
+
+/* Accessibility improvements */
+.key:focus {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+.key:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.key:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+.dark-mode .key:focus-visible {
+  outline-color: #64b5f6;
+}
+
+/* Animation for key press feedback */
+@keyframes keyPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.key.pressed {
+  animation: keyPress 0.1s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) and (min-width: 768px) {
+  .accessible-keyboard-container {
+    padding: 20px;
+  }
+
+  .app-title {
+    font-size: 2.25rem;
+  }
+
+  .keyboard {
+    padding: 24px;
+  }
+
+  .key {
+    min-width: 50px;
+    min-height: 50px;
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .text-input {
+    font-size: 16px;
+    min-height: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .accessible-keyboard-container {
+    padding: 16px;
+  }
+
+  .header-controls {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .app-title {
+    font-size: 2rem;
+  }
+
+  .control-buttons {
+    gap: 8px;
+  }
+
+  .mode-toggle {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .keyboard-toggle,
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .keyboard {
+    padding: 20px;
+  }
+
+  .key {
+    min-width: 45px;
+    min-height: 45px;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .text-input {
+    font-size: 16px;
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .keyboard-row {
+    gap: 6px;
+  }
+
+  .key {
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .keyboard {
+    padding: 16px;
+  }
+
+  .app-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* iPad Pro and large tablets */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .keyboard {
+    max-width: 1000px;
+  }
+
+  .key {
+    min-width: 70px;
+    min-height: 70px;
+    font-size: 18px;
+    padding: 18px 22px;
+  }
+
+  .text-input {
+    font-size: 20px;
+    min-height: 180px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .key {
+    border-width: 2px;
+    border-color: #000;
+  }
+
+  .key:hover {
+    background: #f0f0f0;
+    border-color: #666;
+  }
+
+  .key.focused {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .key {
+    transition: none;
+  }
+
+  .key:hover {
+    transform: none;
+  }
+
+  .key.focused {
+    transform: scale(1.02);
+  }
+}
+
+/* iPad specific touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .key:hover {
+    transform: none;
+    background: inherit;
+  }
+
+  .key:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 1);
+  }
+
+  .key.focused:active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .dark-mode .key:active {
+    background: rgba(31, 41, 55, 1);
+  }
+
+  .dark-mode .key.focused:active {
+    background: linear-gradient(135deg, #64b5f6 0%, #bb86fc 100%);
+  }
+}
+
+/* Landscape iPad orientation */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .accessible-keyboard-container {
+    padding: 12px;
+  }
+
+  .text-display {
+    margin-bottom: 20px;
+  }
+
+  .text-input {
+    min-height: 100px;
+  }
+
+  .keyboard {
+    padding: 20px;
+  }
+
+  .key {
+    min-width: 50px;
+    min-height: 50px;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+}
+
+/* Portrait iPad orientation */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .keyboard {
+    max-width: 800px;
+  }
+}
