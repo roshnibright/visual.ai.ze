@@ -26,7 +26,7 @@ def char_prediction(input_text):
     if not input_text or not input_text.strip():
         return []
 
-    words = input_text.strip().split()
+    words = input_text.strip().split()[:-1]
 
     last_word = words[-1]
 
@@ -45,8 +45,10 @@ def char_prediction(input_text):
 
         result = ast.literal_eval(response.content[0].text.strip())
 
+        
+        #check that everything is the right length -f
         if len(result) == 1:
-            return [result]
+            return result
         elif len(result) <= 10:
             return result[:5]
         else:
@@ -91,8 +93,14 @@ def word_prediction(input_text, word_list):
         )
 
         result = ast.literal_eval(response.content[0].text.strip())
-
-        return result
+        
+        #check that everything is the right length -f
+        if len(result) == 1:
+            return result
+        elif len(result) <= 10:
+            return result[:5]
+        else:
+            return []
 
     except Exception as e:
         print(f"Error calling Anthropic API: {e}")
