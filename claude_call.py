@@ -45,16 +45,10 @@ def char_prediction(input_text):
 
         result = ast.literal_eval(response.content[0].text.strip())
 
-        # if result == "UNCLEAR":
-        #     return []
-
-        #The prompt wont do this -F
-
         if len(result) == 1:
             return [result]
         elif len(result) <= 10:
-            chars = re.findall(r'[a-zA-Z0-9]', result)
-            return chars[:4]
+            return result[:5]
         else:
             return []
 
@@ -98,18 +92,7 @@ def word_prediction(input_text, word_list):
 
         result = ast.literal_eval(response.content[0].text.strip())
 
-
-        if result == "NONE":
-            return []
-
-        predicted_words = []
-
-        words_in_response = [w.strip() for w in result.replace(',', ' ').split()]
-        for word in words_in_response:
-            if word in word_list:
-                predicted_words.append(word)
-
-        return predicted_words[:3]
+        return result
 
     except Exception as e:
         print(f"Error calling Anthropic API: {e}")
