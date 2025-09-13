@@ -73,12 +73,16 @@ def word_prompt(input_text, word_options):
 - Punctuation and spacing appropriateness based on sentence flow
 - Common word sequences and phrases that follow the established context
 
+**Example:**
+Previous String: "I need to go to the"
+
+
 **Output format (Python Array):**
 ```python array of tuples
 [
-    ("the", 0.95),
-    ("and", 0.87),
-    ("is", 0.75)
+    ("library", 0.95),
+    ("store", 0.87),
+    ("school", 0.75)
 ]
 
 
