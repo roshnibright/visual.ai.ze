@@ -1,5 +1,6 @@
 import os
 import re
+import ast
 from dotenv import load_dotenv
 import anthropic
 from prompts import char_prompt, word_prompt
@@ -42,7 +43,7 @@ def char_prediction(input_text):
             ]
         )
 
-        result = response.content[0].text.strip()
+        result = ast.literal_eval(response.content[0].text.strip())
 
         # if result == "UNCLEAR":
         #     return []
@@ -95,7 +96,7 @@ def word_prediction(input_text, word_list):
             ]
         )
 
-        result = response.content[0].text.strip()
+        result = ast.literal_eval(response.content[0].text.strip())
 
 
         if result == "NONE":
