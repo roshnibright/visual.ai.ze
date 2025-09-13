@@ -1,3 +1,5 @@
+PROMPT #1: CONSIDER CURRENT WORD ONLY
+
 You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
 
 **Input:** "{insert_character_string}"
@@ -28,3 +30,80 @@ Provide your response as a JSON object with the following structure:
 - Probabilities should sum to approximately 1.0 across all reasonable next characters
 - Order predictions from highest to lowest probability
 - Include 5 or less characters 
+
+PROMPT #2: CONSIDER PREVIOUS WORDS AND CURRENT WORD
+
+You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
+
+**Previous Context:** "{input_text}"
+**Current Word:** "{recent_word}"
+
+**Task:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+- Full sentence/paragraph context and meaning from previous words
+- Semantic relationships between previous context and current word completion
+- Common English language patterns and vocabulary
+- Potential typos (users may have motor difficulties)
+- Word completion possibilities for the current word being typed
+- Sentence structure, grammar, and semantic context from preceding words
+- Punctuation and spacing appropriateness based on sentence flow
+- Common word sequences and phrases that follow the established context
+
+**Example:**
+Previous Context: "I need to go to the"
+Current Word: "sto"
+
+Expected Output (Python Array):
+```python array of tuples 
+[
+    ("r", 0.65),
+    ("p", 0.20),
+    ("v", 0.15)
+]
+
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next characters
+- Order predictions from highest to lowest probability
+- Include 5 or less characters 
+
+PROMPT #3: CONSIDER PREVIOUS WORDS (IN ORDER TO OUTPUT A WORD) (FOR THE WORD KEYBOARD)
+
+You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next words to help users with motor impairments type more efficiently. You may only use words from a given list of words. 
+
+**Current text:** "{input_text}"
+
+**Words list:** "{word_options}"
+
+**Instructions:** Analyze both the previous context and current word being typed to provide probability rankings for the next character, accounting for:
+- Full sentence/paragraph context and meaning from previous words
+- Semantic relationships between previous context and current word completion
+- Common English language patterns and vocabulary
+- Potential typos (users may have motor difficulties)
+- Word completion possibilities for the current word being typed
+- Sentence structure, grammar, and semantic context from preceding words
+- Punctuation and spacing appropriateness based on sentence flow
+- Common word sequences and phrases that follow the established context
+
+**Example:**
+Previous String: "I need to go to the"
+
+
+**Output format (Python Array):**
+```python array of tuples
+[
+    ("library", 0.95),
+    ("store", 0.87),
+    ("school", 0.75)
+]
+
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next words
+- Order predictions from highest to lowest probability
+- Include 5 or less words
