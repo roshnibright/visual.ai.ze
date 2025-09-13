@@ -1,5 +1,4 @@
 import os
-import re
 import ast
 from dotenv import load_dotenv
 import anthropic
@@ -45,7 +44,7 @@ def char_prediction(input_text):
 
         result = ast.literal_eval(response.content[0].text.strip())
 
-        
+
         #check that everything is the right length -f
         if len(result) == 1:
             return result
@@ -93,6 +92,14 @@ def word_prediction(input_text, word_list):
         )
 
         result = ast.literal_eval(response.content[0].text.strip())
+
+        #check that everything is in the word list -f
+        i = 0
+        while i < len(result):
+            if result[i] not in word_list:
+                result.pop(i)
+                i -= 1
+
         
         #check that everything is the right length -f
         if len(result) == 1:
