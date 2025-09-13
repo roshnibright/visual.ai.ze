@@ -2,8 +2,44 @@
 
 
 def char_prompt(input_text, recent_word):
-    return f"""Given this text fragment: "{input_text}" and the last word: "{recent_word}",
+    res = f"""
+    You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next characters to help users with motor impairments type more efficiently.
 
+**Input:** "{input_text}"
+
+**Task:** Analyze the input text and provide probability rankings for the next character, accounting for:
+- Common English language patterns and vocabulary
+- Potential typos in the input (users may have motor difficulties)
+- Word completion possibilities
+- Sentence structure and grammar
+- Punctuation and spacing appropriateness
+
+**Output Format:**
+Provide your response as a JSON object with the following structure:
+```json
+{
+  "predictions": [
+    {"character": "e", "probability": 0.35},
+    {"character": "a", "probability": 0.18},
+    {"character": " ", "probability": 0.15},
+    {"character": "s", "probability": 0.12}
+  ]
+}
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next characters
+- Order predictions from highest to lowest probability
+- Include 5 or less characters 
+"""
+
+    return res
+    
+    
+
+"""
 The text appears to end mid-word. Based on the context of the sentence, what is the most likely next character(s) to complete the current word?
 
 Rules:
@@ -13,11 +49,14 @@ Rules:
 4. Only consider single characters, not full words
 5. Consider common English words and grammar
 
-Respond with just the character(s) or "UNCLEAR", nothing else."""
+Respond with just the character(s) or "UNCLEAR", nothing else. """
 
 def word_prompt(input_text, word_options):
     return f"""Given this text fragment: "{input_text}"
 
+
+
+"""
 From the following list of words, which word(s) would most naturally come next to complete the sentence or phrase?
 
 Available words: {word_options}
@@ -29,4 +68,5 @@ Rules:
 4. If none of the words fit well, return "NONE"
 5. Only return words that are in the provided list
 
-Respond with just the word(s) from the list or "NONE", nothing else."""
+Respond with just the word(s) from the list or "NONE", nothing else.
+"""
