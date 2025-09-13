@@ -95,6 +95,7 @@ def word_prediction(input_text, word_list):
 
         result = response.content[0].text.strip()
 
+
         if result == "NONE":
             return []
 
@@ -120,7 +121,7 @@ if __name__ == "__main__":
         print(f"Input: '{test}'")
         print(f"Predictions: {predictions}")
 
-    test_cases = [("I am going to eat a", ["bus, strawberry, classroom, cat"])]
+    test_cases = [("I am going to eat a", ["bus", "strawberry", "classroom", "cat"])]
 
     for input, words in test_cases:
         predictions = word_prediction(input, words)
