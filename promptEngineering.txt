@@ -59,3 +59,35 @@ Provide your response as a JSON object with the following structure:
     {"character": "s", "probability": 0.12}
   ]
 }
+
+**Requirements:**
+
+- Use probability values between 0.0 and 1.0
+- Only include characters with probability ≥ 0.10 (moderate likelihood or higher)
+- Probabilities should sum to approximately 1.0 across all reasonable next characters
+- Order predictions from highest to lowest probability
+- Include 5 or less characters 
+
+PROMPT #3: CONSIDER PREVIOUS WORDS (IN ORDER TO OUTPUT A WORD) (FOR THE WORD KEYBOARD)
+
+You are helping with an assistive technology keyboard that dynamically resizes keys based on letter probability. Your task is to predict the most likely next words to help users with motor impairments type more efficiently.
+
+**Current text:** "{INPUT_TEXT}"
+
+**Instructions:**
+1. Predict the 0-5 most likely next words that could follow this text
+2. Consider that the input may contain typos or incomplete words
+3. Focus on practical, everyday communication needs
+4. Include both common words and contextually relevant options
+5. If the last word appears incomplete, include completions of that word
+
+**Output format (JSON):**
+```json
+{
+  "predictions": [
+    {"word": "the", "confidence": 0.95},
+    {"word": "and", "confidence": 0.87},
+    {"word": "is", "confidence": 0.75}
+  ],
+  "context": "brief explanation of reasoning if helpful"
+}
