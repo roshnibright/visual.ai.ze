@@ -233,7 +233,7 @@ const AccessibleKeyboard = () => {
       // Determine API URL based on environment
       const apiUrl = import.meta.env.DEV
         ? "http://localhost:8000/predict-char" // Development (Python server)
-        : "/api/predict-char"; // Production (Node.js server)
+        : "/predict-char"; // Production (Node.js server)
 
       const response = await fetch(apiUrl, {
         method: "POST",

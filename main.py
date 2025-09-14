@@ -34,7 +34,7 @@ class WordInput(BaseModel):
     word_list: List[str]
 
 
-@app.post("/api/predict-char")
+@app.post("/predict-char")
 def predict_char(data: CharInput):
     try:
         return char_prediction(data.text)
