@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
-from model_call import char_prediction, word_prediction
+from model_call import char_prediction
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

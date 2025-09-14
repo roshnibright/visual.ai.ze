@@ -729,17 +729,10 @@ const AccessibleKeyboard = () => {
         </div>
 
         <div className="text-display">
-          <textarea
-            value={text}
-            placeholder={
-              isAccessibleMode
-                ? "Type with smart predictions below..."
-                : "Type with regular keyboard below..."
-            }
-            className="text-input"
-            aria-label="Text input area"
-            readOnly={true}
-          />
+          <div className="text-input" aria-label="Text input area">
+            {text}
+            <span className="cursor">|</span>
+          </div>
           {isAccessibleMode && (
             <div className="prediction-display">
               {Object.entries(predictions).map(([char, preds]) => (
@@ -766,53 +759,61 @@ const AccessibleKeyboard = () => {
           )}
         </div>
 
-        <div
-          className="keyboard"
-          role="application"
-          aria-label="Accessible keyboard"
-        >
-          {(() => {
-            const rowHeights = calculateRowHeights();
+        <div className="keyboard-container">
+          <div
+            className="keyboard main-keyboard"
+            role="application"
+            aria-label="Accessible keyboard"
+          >
+            {(() => {
+              const rowHeights = calculateRowHeights();
 
-            return (
-              <>
-                {keyboardLayout.map((row, rowIndex) => (
-                  <div key={rowIndex} className="keyboard-row">
-                    {row.map((key) => (
-                      <Key
-                        key={key}
-                        keyValue={key}
-                        isFocused={focusedKey === key}
-                        className="key-main"
-                      />
-                    ))}
-                  </div>
+              return (
+                <>
+                  {keyboardLayout.map((row, rowIndex) => (
+                    <div key={rowIndex} className="keyboard-row">
+                      {row.map((key) => (
+                        <Key
+                          key={key}
+                          keyValue={key}
+                          isFocused={focusedKey === key}
+                          className="key-main"
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </>
+              );
+            })()}
+          </div>
+
+          <div className="punctuation-sidebar">
+            <div className="punctuation-title">Punctuation</div>
+            <div className="punctuation-keys">
+              {[".", ",", "!", "?", ";", ":", "'", '"', "-"].map((key) => (
+                <Key
+                  key={key}
+                  keyValue={key}
+                  isFocused={focusedKey === key}
+                  className="key-punctuation"
+                />
+              ))}
+            </div>
+
+            <div className="special-keys-section">
+              <div className="punctuation-title">Actions</div>
+              <div className="special-keys">
+                {["SHIFT", "BACKSPACE", "ENTER"].map((key) => (
+                  <Key
+                    key={key}
+                    keyValue={key}
+                    isFocused={focusedKey === key}
+                    className="key-special"
+                  />
                 ))}
-
-                <div className="keyboard-row punctuation-keys">
-                  {[".", ",", "!", "?", ";", ":", "'", '"', "-"].map((key) => (
-                    <Key
-                      key={key}
-                      keyValue={key}
-                      isFocused={focusedKey === key}
-                      className="key-punctuation"
-                    />
-                  ))}
-                </div>
-
-                <div className="keyboard-row special-keys">
-                  {["SHIFT", "BACKSPACE", "ENTER"].map((key) => (
-                    <Key
-                      key={key}
-                      keyValue={key}
-                      isFocused={focusedKey === key}
-                      className="key-special"
-                    />
-                  ))}
-                </div>
-              </>
-            );
-          })()}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

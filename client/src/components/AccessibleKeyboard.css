@@ -509,6 +509,30 @@
   box-shadow: inset 0 0 0 2px #9ca3af;
 }
 
+/* Cursor styles */
+.cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+  font-weight: 100;
+  color: #667eea;
+  margin-left: 2px;
+}
+
+.dark-mode .cursor {
+  color: #64b5f6;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .dark-mode .text-input {
   color: #f9fafb;
 }
@@ -581,6 +605,78 @@
   border-color: rgba(75, 85, 99, 0.3);
 }
 
+/* Keyboard Container */
+.keyboard-container {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Main Keyboard */
+.main-keyboard {
+  flex: 1;
+  min-width: 0; /* Allow flex shrinking */
+}
+
+/* Punctuation Sidebar */
+.punctuation-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  max-width: 250px;
+}
+
+.dark-mode .punctuation-sidebar {
+  background: rgba(17, 24, 39, 0.9);
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.punctuation-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dark-mode .punctuation-title {
+  color: #9ca3af;
+}
+
+.punctuation-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.special-keys-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .special-keys-section {
+  border-color: rgba(75, 85, 99, 0.3);
+}
+
+.special-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
 .keyboard-row {
   display: flex;
   justify-content: center;
@@ -612,13 +708,14 @@
 }
 
 .special-keys {
-  gap: 12px;
+  gap: 6px;
 }
 
 .special-keys .key {
-  min-width: 100px;
-  min-height: 60px;
-  font-size: 1.2rem;
+  min-width: 50px;
+  min-height: 50px;
+  font-size: 0.9rem;
+  padding: 8px 4px;
 }
 
 /* Key Styles */
@@ -846,6 +943,24 @@
   .text-input {
     font-size: 16px;
     min-height: 120px;
+  }
+
+  .keyboard-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .punctuation-sidebar {
+    min-width: auto;
+    max-width: none;
+  }
+
+  .punctuation-keys {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .special-keys {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
