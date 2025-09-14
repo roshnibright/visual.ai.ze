@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./AccessibleKeyboard.css";
+import SubjectNavigation from "./SubjectNavigation";
 
 const AccessibleKeyboard = () => {
   const [text, setText] = useState("");
@@ -11,9 +12,9 @@ const AccessibleKeyboard = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAccessibleMode, setIsAccessibleMode] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState("math");
-  const [isNavOpen, setIsNavOpen] = useState(true);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [wordsPerPage] = useState(8); // Number of words to display at once
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isShiftPressed, setIsShiftPressed] = useState(false);
+  const [animationSpeed, setAnimationSpeed] = useState(1000); // Duration in milliseconds (500-3000)
 
   // Subject-specific word sets
   const subjectWords = {
@@ -202,7 +203,7 @@ const AccessibleKeyboard = () => {
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
     ["Z", "X", "C", "V", "B", "N", "M"],
-    ["SPACE"],
+    ["SPACE", "BACKSPACE"],
   ];
 
   // Special keys
@@ -406,7 +407,7 @@ const AccessibleKeyboard = () => {
 
         // Start animation
         const startTime = Date.now();
-        const duration = 1000; // 1 second
+        const duration = getAnimationDuration();
 
         // Easing function for smooth animation
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
@@ -469,17 +470,25 @@ const AccessibleKeyboard = () => {
         const newText = prev + " ";
         return newText;
       });
+      // Turn off shift after any key press
+      setIsShiftPressed(false);
     } else if (key === "BACKSPACE") {
       setText((prev) => {
         const newText = prev.slice(0, -1);
         return newText;
       });
+      // Turn off shift after any key press
+      setIsShiftPressed(false);
     } else if (key === "ENTER") {
       setText((prev) => {
         const newText = prev + "\n";
         return newText;
       });
+      // Turn off shift after any key press
+      setIsShiftPressed(false);
     } else if (key === "SHIFT") {
+      // Toggle shift state
+      setIsShiftPressed(!isShiftPressed);
       return;
     } else if (
       key === "." ||
@@ -496,11 +505,15 @@ const AccessibleKeyboard = () => {
         const newText = prev + key;
         return newText;
       });
+      // Turn off shift after any key press
+      setIsShiftPressed(false);
     } else {
       setText((prev) => {
-        const newText = prev + key.toLowerCase();
+        const newText = prev + (isShiftPressed ? key : key.toLowerCase());
         return newText;
       });
+      // Turn off shift after any key press
+      setIsShiftPressed(false);
     }
   };
 
@@ -545,13 +558,41 @@ const AccessibleKeyboard = () => {
       handleKeyPress(keyValue);
     };
 
+    // Check if this is the shift key and if it's pressed
+    const isShiftKey = keyValue === "SHIFT";
+    const isShiftActive = isShiftKey && isShiftPressed;
+
+    // Set base flex values for space and backspace
+    let baseFlex = 1;
+    if (keyValue === "SPACE") {
+      baseFlex = 2; // Space bar gets 2/3 of the space
+    } else if (keyValue === "BACKSPACE") {
+      baseFlex = 1; // Backspace gets 1/3 of the space
+    }
+
+    // Get the current flex value - prioritize animatedFlex if available, otherwise use baseFlex
+    const currentFlex = isAccessibleMode
+      ? animatedFlex[keyValue] !== undefined
+        ? animatedFlex[keyValue]
+        : baseFlex
+      : baseFlex;
+
+    // Debug logging for space and backspace
+    if (keyValue === "SPACE" || keyValue === "BACKSPACE") {
+      console.log(
+        `${keyValue} - baseFlex: ${baseFlex}, animatedFlex: ${animatedFlex[keyValue]}, currentFlex: ${currentFlex}`
+      );
+    }
+
     return (
       <button
         className={`key ${keyInfo.width} ${
           isAccessibleMode ? "accessible" : "regular"
-        } ${isAccessibleMode ? "dynamic-size" : ""} ${className}`}
+        } ${isAccessibleMode ? "dynamic-size" : ""} ${className} ${
+          isShiftActive ? "shift-active" : ""
+        }`}
         style={{
-          flex: isAccessibleMode ? animatedFlex[keyValue] || 1 : 1,
+          flex: currentFlex,
           height: isAccessibleMode
             ? `${60 * (animatedScales[keyValue] || 1)}px`
             : "60px",
@@ -567,7 +608,7 @@ const AccessibleKeyboard = () => {
   };
 
   // Handle word click to add to text
-  const handleWordClick = (word) => {
+  const handleWordAdd = (word) => {
     setText((prev) => {
       const newText =
         prev + (prev && !prev.endsWith(" ") ? " " : "") + word + " ";
@@ -575,36 +616,15 @@ const AccessibleKeyboard = () => {
     });
   };
 
-  // Handle arrow navigation
-  const handleScrollUp = () => {
-    setCurrentWordIndex((prev) => Math.max(0, prev - wordsPerPage));
-  };
-
-  const handleScrollDown = () => {
-    const maxIndex = Math.max(
-      0,
-      subjectWords[selectedSubject].words.length - wordsPerPage
-    );
-    setCurrentWordIndex((prev) => Math.min(maxIndex, prev + wordsPerPage));
-  };
-
-  // Reset word index when subject changes
+  // Handle subject change
   const handleSubjectChange = (subjectKey) => {
     setSelectedSubject(subjectKey);
-    setCurrentWordIndex(0);
   };
 
-  // Get currently visible words
-  const getVisibleWords = () => {
-    const words = subjectWords[selectedSubject].words;
-    return words.slice(currentWordIndex, currentWordIndex + wordsPerPage);
+  // Get animation duration (just return the speed value)
+  const getAnimationDuration = () => {
+    return animationSpeed;
   };
-
-  // Check if navigation arrows should be enabled
-  const canScrollUp = currentWordIndex > 0;
-  const canScrollDown =
-    currentWordIndex + wordsPerPage <
-    subjectWords[selectedSubject].words.length;
 
   return (
     <div
@@ -613,86 +633,14 @@ const AccessibleKeyboard = () => {
       }`}
     >
       {/* Side Navigation */}
-      <div className={`side-nav ${isNavOpen ? "open" : "closed"}`}>
-        <div className="nav-header">
-          <h3>Subjects</h3>
-          <button
-            className="nav-toggle"
-            onClick={() => setIsNavOpen(!isNavOpen)}
-            aria-label={isNavOpen ? "Close navigation" : "Open navigation"}
-          >
-            {isNavOpen ? "←" : "→"}
-          </button>
-        </div>
-
-        {isNavOpen && (
-          <>
-            <div className="subject-tabs">
-              {Object.entries(subjectWords).map(([key, subject]) => (
-                <button
-                  key={key}
-                  className={`subject-tab ${
-                    selectedSubject === key ? "active" : ""
-                  }`}
-                  onClick={() => setSelectedSubject(key)}
-                  aria-label={`Switch to ${subject.name}`}
-                >
-                  <span className="subject-icon">{subject.icon}</span>
-                  <span className="subject-name">{subject.name}</span>
-                </button>
-              ))}
-            </div>
-
-            <div className="word-display">
-              <div className="word-header">
-                <h4>{subjectWords[selectedSubject].name} Words</h4>
-                <div className="word-counter">
-                  {Math.min(
-                    currentWordIndex + wordsPerPage,
-                    subjectWords[selectedSubject].words.length
-                  )}{" "}
-                  of {subjectWords[selectedSubject].words.length}
-                </div>
-              </div>
-
-              <button
-                className={`nav-arrow nav-arrow-up ${
-                  !canScrollUp ? "disabled" : ""
-                }`}
-                onClick={handleScrollUp}
-                disabled={!canScrollUp}
-                aria-label="Show previous words"
-              >
-                ↑
-              </button>
-
-              <div className="word-list-fixed">
-                {getVisibleWords().map((word, index) => (
-                  <button
-                    key={currentWordIndex + index}
-                    className="word-item"
-                    onClick={() => handleWordClick(word)}
-                    aria-label={`Add word: ${word}`}
-                  >
-                    {word}
-                  </button>
-                ))}
-              </div>
-
-              <button
-                className={`nav-arrow nav-arrow-down ${
-                  !canScrollDown ? "disabled" : ""
-                }`}
-                onClick={handleScrollDown}
-                disabled={!canScrollDown}
-                aria-label="Show next words"
-              >
-                ↓
-              </button>
-            </div>
-          </>
-        )}
-      </div>
+      <SubjectNavigation
+        isOpen={isNavOpen}
+        onToggle={() => setIsNavOpen(!isNavOpen)}
+        selectedSubject={selectedSubject}
+        onSubjectChange={handleSubjectChange}
+        subjectWords={subjectWords}
+        onWordAdd={handleWordAdd}
+      />
 
       {/* Main Content */}
       <div className={`main-content ${isNavOpen ? "nav-open" : "nav-closed"}`}>
@@ -711,11 +659,10 @@ const AccessibleKeyboard = () => {
                 isAccessibleMode ? "regular" : "accessible"
               } keyboard mode`}
             >
-              <span className="mode-icon">
-                {isAccessibleMode ? "🧠" : "⌨️"}
-              </span>
               <span className="mode-label">
-                {isAccessibleMode ? "Smart" : "Regular"}
+                {isAccessibleMode
+                  ? "Go to Regular Keyboard"
+                  : "Go to Accessible Keyboard"}
               </span>
             </button>
             <button
@@ -723,14 +670,35 @@ const AccessibleKeyboard = () => {
               onClick={() => setIsDarkMode(!isDarkMode)}
               aria-label={`Switch to ${isDarkMode ? "light" : "dark"} theme`}
             >
-              {isDarkMode ? "☀️" : "🌙"}
+              {isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             </button>
+            <div className="animation-control">
+              <label htmlFor="animation-speed" className="animation-label">
+                Animation Speed: {animationSpeed}ms
+              </label>
+              <input
+                id="animation-speed"
+                type="range"
+                min="200"
+                max="3000"
+                step="100"
+                value={animationSpeed}
+                onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
+                className="animation-slider"
+                aria-label="Animation speed slider"
+              />
+            </div>
           </div>
         </div>
 
         <div className="text-display">
           <div className="text-input" aria-label="Text input area">
-            {text}
+            {text.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                {index < text.split("\n").length - 1 && <br />}
+              </React.Fragment>
+            ))}
             <span className="cursor">|</span>
           </div>
           {isAccessibleMode && (
@@ -803,7 +771,7 @@ const AccessibleKeyboard = () => {
             <div className="special-keys-section">
               <div className="punctuation-title">Actions</div>
               <div className="special-keys">
-                {["SHIFT", "BACKSPACE", "ENTER"].map((key) => (
+                {["SHIFT", "ENTER"].map((key) => (
                   <Key
                     key={key}
                     keyValue={key}

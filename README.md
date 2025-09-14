@@ -1,93 +1,286 @@
-# How to code a webapp with this skeleton
+# Easy Key-Z: Accessible Keyboard with AI Predictions
 
-## Initial setup
+An intelligent, accessible keyboard interface designed for users with fine motor impairments and learning disabilities. Features dynamic key resizing based on AI predictions and customizable accessibility options.
 
-All teammates will need (explained in weblab.is/hw0)
+## 🌟 Features
 
-- A bash console (on Mac or Linux, this is Terminal. On Windows, we recommend Git Bash)
-- NodeJS version 18. If it is installed correctly, typing "node --version" should give v18.13.0 and "npm --version" should give 8.19.3, or higher.
-- Visual Studio Code (or another code editor)
-- the Prettier VSCode extension
+### 🎯 **Core Accessibility Features**
 
-Also, all of you will need to go through the MongoDB Atlas setup (https://bit.ly/mongo-setup).
+- **Dynamic Key Resizing**: Keys automatically resize based on AI predictions of next likely characters
+- **Large Touch Targets**: Optimized for users with fine motor difficulties
+- **High Contrast Modes**: Dark and light themes with excellent visibility
+- **Smooth Animations**: Customizable animation speeds (200ms - 3000ms)
+- **Keyboard Navigation**: Full keyboard accessibility support
 
-Additionally for authentication, one of you will need to obtain a CLIENT_ID, instructions are at https://bit.ly/gauth-mit.
+### 🧠 **AI-Powered Predictions**
 
-## Downloading these files
+- **Real-time Predictions**: Keys resize based on likelihood of next character
+- **External API Integration**: Connects to Cerebras API for intelligent predictions
+- **Visual Feedback**: Larger keys for more likely next characters
+- **Smooth Transitions**: Animated resizing with customizable easing
 
-First, you probably have a team repository somewhere (the link looks like: https://github.com/weblab-class/teammate1-teammate2-teammate3). You each should clone this (empty) repository by navigating to where you want your folder to be (**NOT in catbook**) and typing: git clone https://github.com/weblab-class/teammate1-teammate2-teammate3.git <-- with the correct link.
+### 📚 **Subject-Specific Word Lists**
 
-Then, one of your team members will need to do the following:
+- **Mathematics**: 50+ math terms (algebra, calculus, geometry, etc.)
+- **Chemistry**: 50+ chemistry terms (elements, compounds, reactions, etc.)
+- **English**: 50+ literature terms (grammar, literary devices, etc.)
+- **Collapsible Navigation**: Subject panel can be hidden/shown as needed
+- **Quick Word Insertion**: Click words to add them to your text
 
-First on GitHub, download the skeleton (this repository) as a zip file, by clicking Code -> Download as ZIP. (Do not clone it, since this will download extra files, like .git, which will lead to GitHub being confused).
+### ⌨️ **Enhanced Keyboard Features**
 
-Then, drag over all of the files in this skeleton into your team's folder. **Make sure to also drag over the hidden files!** To see these hidden files, navigate to the skeleton in Finder/File Explorer and press command+shift+period (mac) or View > Show > Hidden items (windows).
+- **QWERTY Layout**: Standard keyboard layout with accessibility enhancements
+- **Smart Shift Toggle**: Visual feedback when shift is active (green highlight)
+- **Redesigned Delete Key**: Red backspace key positioned next to space bar
+- **Proportional Sizing**: Space bar (2/3 width) and backspace (1/3 width)
+- **Multi-line Support**: Enter key creates proper line breaks
 
-The files/folders you must drag over are:
+### 🎨 **Customization Options**
 
-- .gitignore (hidden)
-- .npmrc (hidden)
-- .prettierrc (hidden)
-- client (folder)
-- package-lock.json
-- package.json
-- README.md
-- server (folder)
-- vite.config.js
+- **Animation Speed Slider**: Adjust key resizing speed (200ms - 3000ms)
+- **Theme Toggle**: Switch between dark and light modes
+- **Mode Toggle**: Switch between accessible and regular keyboard modes
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
 
-Additionally, you must create a .env file in the root directory. See .env.example for an example of what this file should look like.
+## 🚀 Quick Start
 
-Then, in terminal, navigate to your teams folder and push all of the files to your team's GitHub repository as usual:
+### Prerequisites
 
-- git add -A
-- git commit -m "Skeleton code"
-- git push
+- Node.js 18+
+- npm 8.19.3+
 
-Now the rest of your teammates can pull all these files with a 'git pull'!
+### Installation
 
-Post on Piazza if you run into any issues
+1. **Clone the repository**
 
-## What you need to change in the skeleton
+   ```bash
+   git clone <your-repo-url>
+   cd visual.ai.ze
+   ```
 
-- Change the Frontend CLIENT_ID (Skeleton.js) to your team's CLIENT_ID (obtain this at https://bit.ly/gauth-mit)
-- Change the Server CLIENT_ID to the same CLIENT_ID (auth.js)
-- Change the Database SRV (mongoConnectionURL) for Atlas (server.js). You got this in the MongoDB setup. remember to replace <password> and <dbname> (should be no < or > in your SRV) (From: https://bit.ly/mongo-setup)
-- Change the Database Name for MongoDB to whatever you put in the SRV to replace <dbname> (server.js)
-- (Optional) Add a favicon to your website at the path client/dist/favicon.ico
-- (Optional) Update website title in client/dist/index.html
-- (Optional) Update this README file ;)
-- (Optional) Update the package.json file with your app name :) (line 2)
+2. **Install dependencies**
 
-## How to run this skeleton
+   ```bash
+   npm install
+   ```
 
-First, 'npm install'
-Then open two separate terminals, and 'npm run dev' in the first, and 'npm start' in the second.
-Then open http://localhost:5173
+3. **Start the development server**
 
-<!-- ## How to go from this skeleton to your actual app
+   ```bash
+   npm run dev
+   ```
 
-Check out this [How to Get Started Guide](http://weblab.is/get-started) -->
+4. **Open your browser**
+   Navigate to `http://localhost:5173`
 
-## Socket stuff
+### Production Deployment
 
-Note: we'll be getting to this in lecture in week 2, so don't worry if you don't know it yet
+1. **Build the project**
 
-- If you're not using realtime updating or don't need server->client communication, you can remove socket entirely! (server-socket.js, client-socket.js, and anything that imports them)
-- If you are using sockets, consider what you want to do with the FIXME in server-socket.js
+   ```bash
+   npm run build
+   ```
 
-## Edit at your own risk
+2. **Deploy to Vercel** (recommended)
+   - Connect your GitHub repository to Vercel
+   - Vercel will automatically deploy on push to main branch
 
-the following files students do not need to edit. feel free to read them if you would like.
+## 🏗️ Project Structure
 
 ```
-client/src/utilities.js
-client/src/client-socket.js
-server/validator.js
-server/server-socket.js
-.npmrc
-.prettierrc
-package-lock.json
-vite.config.js
+visual.ai.ze/
+├── client/                    # Frontend React application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── AccessibleKeyboard.jsx    # Main keyboard component
+│   │   │   ├── AccessibleKeyboard.css    # Keyboard styles
+│   │   │   ├── SubjectNavigation.jsx     # Subject panel component
+│   │   │   └── SubjectNavigation.css     # Subject panel styles
+│   │   ├── pages/
+│   │   │   └── Skeleton.jsx              # Main page component
+│   │   └── App.jsx                       # App router
+│   ├── index.html                        # HTML template
+│   └── favicon.png                       # App icon
+├── server/                     # Backend server (optional)
+│   ├── server.js              # Express server
+│   ├── auth.js                # Authentication
+│   └── models/                # Database models
+├── main.py                     # Python FastAPI backend
+├── requirements.txt            # Python dependencies
+└── package.json               # Node.js dependencies
 ```
 
-## Good luck on your project :)
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# Optional: MongoDB connection for user data
+MONGO_SRV=your_mongodb_connection_string
+
+# Optional: Google OAuth (if using authentication)
+GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+### API Configuration
+
+The keyboard connects to a prediction API. Update the API URL in `AccessibleKeyboard.jsx`:
+
+```javascript
+const apiUrl = import.meta.env.DEV
+  ? "http://localhost:8000/predict-char" // Development
+  : "https://your-api-url.com/predict-char"; // Production
+```
+
+## 🎮 Usage
+
+### Basic Typing
+
+1. **Click keys** on the virtual keyboard to type
+2. **Use space bar** for spaces
+3. **Press backspace** (red key) to delete characters
+4. **Press enter** to create new lines
+
+### Accessible Mode
+
+1. **Toggle "Go to Accessible Keyboard"** to enable AI predictions
+2. **Keys will resize** based on predicted next characters
+3. **Larger keys** indicate higher probability characters
+4. **Smooth animations** show the resizing process
+
+### Subject Word Lists
+
+1. **Click the arrow (→)** to open the subject panel
+2. **Select a subject** (Math, Chemistry, English)
+3. **Click words** to add them to your text
+4. **Use arrow buttons** to navigate through word lists
+
+### Customization
+
+1. **Animation Speed**: Use the slider to adjust key resizing speed
+2. **Theme**: Toggle between dark and light modes
+3. **Shift Key**: Click to activate (turns green), automatically deactivates after typing
+
+## 🔌 API Integration
+
+### Prediction API Format
+
+The keyboard expects predictions in this format:
+
+```json
+[
+  { "character": "e", "confidence": 0.3 },
+  { "character": "a", "confidence": 0.2 },
+  { "character": "i", "confidence": 0.15 }
+]
+```
+
+### Backend Setup (Optional)
+
+If you want to run your own prediction server:
+
+1. **Python FastAPI** (recommended):
+
+   ```bash
+   pip install -r requirements.txt
+   uvicorn main:app --host 0.0.0.0 --port 8000
+   ```
+
+2. **Node.js Express**:
+   ```bash
+   npm start
+   ```
+
+## 🎨 Customization
+
+### Adding New Subjects
+
+Edit the `subjectWords` object in `AccessibleKeyboard.jsx`:
+
+```javascript
+const subjectWords = {
+  yourSubject: {
+    name: "Your Subject",
+    icon: "🔬",
+    words: ["word1", "word2", "word3"],
+  },
+};
+```
+
+### Styling
+
+- **Main styles**: `client/src/components/AccessibleKeyboard.css`
+- **Subject panel**: `client/src/components/SubjectNavigation.css`
+- **Color scheme**: Update CSS custom properties for theming
+
+### Animation Settings
+
+- **Speed range**: 200ms - 3000ms (adjustable via slider)
+- **Easing function**: Cubic ease-out (smooth deceleration)
+- **Key resizing**: Height and width animations
+
+## 📱 Responsive Design
+
+The keyboard is optimized for:
+
+- **Desktop**: Full keyboard with all features
+- **Tablet**: Touch-optimized with larger keys
+- **Mobile**: Compact layout with essential features
+- **iPad**: Special optimizations for tablet use
+
+## ♿ Accessibility Features
+
+- **ARIA Labels**: Screen reader support
+- **Keyboard Navigation**: Tab through all interactive elements
+- **High Contrast**: Dark/light mode support
+- **Large Touch Targets**: Minimum 60px touch areas
+- **Focus Indicators**: Clear visual focus states
+- **Reduced Motion**: Respects user's motion preferences
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Connect GitHub repository to Vercel
+2. Set build command: `npm run build`
+3. Set output directory: `client/dist`
+4. Deploy automatically on push
+
+### Other Platforms
+
+- **Netlify**: Similar to Vercel setup
+- **GitHub Pages**: Use `npm run build` and deploy `client/dist`
+- **Render**: Full-stack deployment with both frontend and backend
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m "Add feature"`
+4. Push to branch: `git push origin feature-name`
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built for accessibility and inclusion
+- Designed for users with fine motor impairments
+- Inspired by the need for better typing assistance tools
+- Special thanks to the accessibility community for feedback
+
+## 📞 Support
+
+For questions or issues:
+
+- Open an issue on GitHub
+- Check the documentation above
+- Review the code comments for implementation details
+
+---
+
+**Easy Key-Z** - Making typing accessible for everyone! 🎯
