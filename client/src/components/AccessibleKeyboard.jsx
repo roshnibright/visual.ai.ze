@@ -230,13 +230,16 @@ const AccessibleKeyboard = () => {
   // }
   const predictChar = async (text) => {
     try {
-      const response = await fetch("http://localhost:8000/predict-char", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text }),
-      });
+      const response = await fetch(
+        "https://visual-ai-ze.onrender.com/predict-char",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text }),
+        }
+      );
 
       const data = await response.json();
       console.log("Character Predictions:", data);

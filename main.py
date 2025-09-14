@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",  # frontend dev server
+    "https://visual-ai-ze.onrender.com/",  # frontend dev server
 ]
 
 app.add_middleware(
