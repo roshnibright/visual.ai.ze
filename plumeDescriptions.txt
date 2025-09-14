@@ -27,7 +27,7 @@ All team members contributed to brainstorming and iterating upon the initial ide
 
 **Accomplishments that we're proud of**
 
-We got the 
+We're very happy that we were able to get our tool working! 
 
 **What we learned**
 
@@ -35,4 +35,4 @@ Fiona has learned not to make absentmindedly accept pull requests at 12am. Fiona
 
 **What's next for our project**
 
-Although the 24-hour time frame caused us to  , during the brainstorming process, we came up with several enhancements that can be implemented to make our tool even more capable and easy to use for those with motor impairments. 
+Although the 24-hour time frame caused us to focus on implementing only the most important features for our project, during the brainstorming process, we came up with several enhancements that can be implemented to make our tool even more capable and easy to use for those with motor impairments. In the future, we could incorporate a touch sensor into the product to adjust our suggestions based on the pressure and angle at which the specific user presses the keys. It is also possible for us to use sensors to see where the user is moving their hand and adjust the keys in that direction. 
