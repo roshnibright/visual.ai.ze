@@ -295,6 +295,16 @@ const AccessibleKeyboard = () => {
       keyboardLayout.flat().forEach((key) => {
         sizes[key] = baseSize;
       });
+      
+      // Also set base sizes for special keys
+      Object.keys(specialKeys).forEach((key) => {
+        sizes[key] = baseSize;
+      });
+      
+      // Set base sizes for additional special keys that appear in the keyboard
+      ["SHIFT", "BACKSPACE", "ENTER"].forEach((key) => {
+        sizes[key] = baseSize;
+      });
 
       // Only apply dynamic sizing in accessible mode
       if (isAccessibleMode) {
@@ -311,8 +321,10 @@ const AccessibleKeyboard = () => {
                 `  Predicted char: '${predictedChar}', confidence: ${confidence}`
               );
               let key;
-              if (predictedChar === " ") {
+              if (predictedChar === "SPACE") {
                 key = "SPACE";
+              } else if (predictedChar === "BACKSPACE") {
+                key = "BACKSPACE";
               } else if (
                 predictedChar === "." ||
                 predictedChar === "," ||

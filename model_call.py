@@ -58,7 +58,6 @@ def char_prediction(input_text):
         y = time.time()
         print("Time taken: ", y - x)
 
-
         result = completion_create_response.choices[0].message.content.strip()
         print("the result is: ", result)
 
@@ -67,7 +66,7 @@ def char_prediction(input_text):
 
             json_result = []
             for char, confidence in parsed_result:
-                if char in string.ascii_letters or char in {"delete", "space"}:
+                if char in string.ascii_letters or char in {"BACKSPACE", "SPACE"}:
                     json_result.append({"character": char, "confidence": confidence})
 
             return json.dumps(json_result)

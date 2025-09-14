@@ -4,7 +4,7 @@ Your task is to predict the most likely next characters so we can make them bigg
 **Task:** Analyze both the previous context and current word being typed (at end of the context) to provide confidence values for the next character. For each of the 5 most likely characters, assign a confidence score from 0-1 representing how confident you are that the following character is the next one to be typed.
 - If you are very unconfident about the next character, your confidences should be low
 - It is fully acceptable to return an empty list if you are unconfident about the next character
-- The "delete" key and "space" key are valid choices to list if you think we are at the end of a word or there is a typo
+- The "backspace" key (call with BACKSPACE) and "space" key (call with SPACE) are valid choices to list if you think we are at the end of a word or there is a typo
 Do this using:
 - Word completion possibilities for the current word being typed
 - Full sentence/paragraph context and meaning from previous words
@@ -49,6 +49,7 @@ This is because a vowel is likely to come next
 - DO NOT include any explanatory text, comments, or markdown formatting
 - DO NOT start with "Based on" or any other explanation
 - Your response must start with [ and end with ]
+- Backspace is represented as "BACKSPACE" and space is represented as "SPACE", not " "
 - Example valid responses: [("i", 0.8), ("n", 0.2)] or []
 
  """
