@@ -16,7 +16,6 @@ httpx==0.28.1
 huggingface-hub==0.34.4
 idna==3.10
 jiter==0.10.0
-kenlm==0.2.0
 packaging==25.0
 pydantic==2.11.9
 pydantic_core==2.33.2

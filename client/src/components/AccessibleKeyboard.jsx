@@ -229,17 +229,28 @@ const AccessibleKeyboard = () => {
   //   "b": { "e": 0.4, "a": 0.2, "i": 0.15, "o": 0.1, "u": 0.1 }
   // }
   const predictChar = async (text) => {
-    const response = await fetch("http://localhost:8000/predict-char", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ text })
-    });
+    try {
+      const response = await fetch("http://localhost:8000/predict-char", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
 
-    const data = await response.json();
-    console.log("Character Predictions:", data);
-    return data;
+      const data = await response.json();
+      console.log("Character Predictions:", data);
+
+      // Parse the data if it's a string
+      if (typeof data === "string") {
+        return JSON.parse(data);
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching predictions:", error);
+      return []; // Return empty array if API fails
+    }
   };
 
   const generatePredictions = useCallback(async (currentText) => {
@@ -247,8 +258,29 @@ const AccessibleKeyboard = () => {
 
     const lastChar = currentText[currentText.length - 1];
     const predictions = await predictChar(currentText);
-    console.log("Predictions:", predictions);
-    return { [lastChar]: predictions };
+    console.log("Raw API Predictions:", predictions);
+
+    // Convert array format to object format
+    const predictionObj = {};
+    console.log("Is array?", Array.isArray(predictions));
+    console.log("Predictions type:", typeof predictions);
+    console.log("Predictions length:", predictions?.length);
+
+    if (Array.isArray(predictions)) {
+      predictions.forEach((pred) => {
+        console.log("Processing pred:", pred);
+        console.log(
+          "Character:",
+          pred.character,
+          "Confidence:",
+          pred.confidence
+        );
+        predictionObj[pred.character] = pred.confidence;
+      });
+    }
+
+    console.log("Converted predictions:", predictionObj);
+    return { [lastChar]: predictionObj };
   }, []);
 
   // Calculate key sizes based on predictions with same-row width adjustment
@@ -266,35 +298,49 @@ const AccessibleKeyboard = () => {
 
       // Only apply dynamic sizing in accessible mode
       if (isAccessibleMode) {
+        console.log("Processing predictions for key sizing:", predictions);
         // First pass: Calculate desired sizes for predicted keys
-        Object.entries(predictions).forEach(([char, predictions]) => {
-          Object.entries(predictions).forEach(([predictedChar, confidence]) => {
-            let key;
-            if (predictedChar === " ") {
-              key = "SPACE";
-            } else if (
-              predictedChar === "." ||
-              predictedChar === "," ||
-              predictedChar === "!" ||
-              predictedChar === "?" ||
-              predictedChar === ";" ||
-              predictedChar === ":" ||
-              predictedChar === "'" ||
-              predictedChar === '"' ||
-              predictedChar === "-"
-            ) {
-              key = predictedChar;
-            } else {
-              key = predictedChar.toUpperCase();
-            }
-
-            if (sizes[key] !== undefined) {
-              sizes[key] = Math.max(
-                minSize,
-                Math.min(maxSize, baseSize + confidence * 1.5)
+        Object.entries(predictions).forEach(([char, charPredictions]) => {
+          console.log(
+            `Processing character '${char}' with predictions:`,
+            charPredictions
+          );
+          Object.entries(charPredictions).forEach(
+            ([predictedChar, confidence]) => {
+              console.log(
+                `  Predicted char: '${predictedChar}', confidence: ${confidence}`
               );
+              let key;
+              if (predictedChar === " ") {
+                key = "SPACE";
+              } else if (
+                predictedChar === "." ||
+                predictedChar === "," ||
+                predictedChar === "!" ||
+                predictedChar === "?" ||
+                predictedChar === ";" ||
+                predictedChar === ":" ||
+                predictedChar === "'" ||
+                predictedChar === '"' ||
+                predictedChar === "-"
+              ) {
+                key = predictedChar;
+              } else {
+                key = predictedChar.toUpperCase();
+              }
+
+              if (sizes[key] !== undefined) {
+                const newSize = Math.max(
+                  minSize,
+                  Math.min(maxSize, baseSize + confidence * 1.5)
+                );
+                console.log(
+                  `  Setting key '${key}' size from ${sizes[key]} to ${newSize} (confidence: ${confidence})`
+                );
+                sizes[key] = newSize;
+              }
             }
-          });
+          );
         });
 
         // No complex algorithm needed - CSS will handle the distribution
@@ -321,72 +367,80 @@ const AccessibleKeyboard = () => {
 
   // Update predictions and key sizes when text changes
   useEffect(() => {
-    const newPredictions = generatePredictions(text);
-    setPredictions(newPredictions);
-    const newSizes = calculateKeySizes(newPredictions);
-    setKeySizes(newSizes);
+    const updatePredictions = async () => {
+      console.log("Text changed:", text);
+      const newPredictions = await generatePredictions(text);
+      console.log("API Predictions received:", newPredictions);
+      setPredictions(newPredictions);
+      const newSizes = calculateKeySizes(newPredictions);
+      console.log("Calculated key sizes:", newSizes);
+      setKeySizes(newSizes);
 
-    // Animate scale and flex changes
-    if (isAccessibleMode) {
-      const targetScales = {};
-      const targetFlex = {};
-      Object.entries(newSizes).forEach(([key, size]) => {
-        const heightMultiplier = Math.max(1.0, Math.min(2.0, size));
-        const flexValue = Math.max(1.0, Math.min(3.0, size));
-        targetScales[key] = heightMultiplier;
-        targetFlex[key] = flexValue;
-      });
-
-      // Start animation
-      const startTime = Date.now();
-      const duration = 1000; // 1 second
-
-      // Easing function for smooth animation
-      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const rawProgress = Math.min(elapsed / duration, 1);
-        const progress = easeOutCubic(rawProgress); // Apply easing
-
-        const currentScales = {};
-        const currentFlex = {};
-
-        Object.entries(animatedScales).forEach(([key, currentScale]) => {
-          const targetScale = targetScales[key] || 1;
-          currentScales[key] =
-            currentScale + (targetScale - currentScale) * progress;
+      // Animate scale and flex changes
+      if (isAccessibleMode) {
+        const targetScales = {};
+        const targetFlex = {};
+        Object.entries(newSizes).forEach(([key, size]) => {
+          const heightMultiplier = Math.max(1.0, Math.min(2.0, size));
+          const flexValue = Math.max(1.0, Math.min(3.0, size));
+          targetScales[key] = heightMultiplier;
+          targetFlex[key] = flexValue;
         });
 
-        Object.entries(animatedFlex).forEach(([key, currentFlexValue]) => {
-          const targetFlexValue = targetFlex[key] || 1;
-          currentFlex[key] =
-            currentFlexValue + (targetFlexValue - currentFlexValue) * progress;
-        });
+        // Start animation
+        const startTime = Date.now();
+        const duration = 1000; // 1 second
 
-        // Initialize missing keys
-        Object.entries(targetScales).forEach(([key, targetScale]) => {
-          if (currentScales[key] === undefined) {
-            currentScales[key] = 1 + (targetScale - 1) * progress;
+        // Easing function for smooth animation
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const rawProgress = Math.min(elapsed / duration, 1);
+          const progress = easeOutCubic(rawProgress); // Apply easing
+
+          const currentScales = {};
+          const currentFlex = {};
+
+          Object.entries(animatedScales).forEach(([key, currentScale]) => {
+            const targetScale = targetScales[key] || 1;
+            currentScales[key] =
+              currentScale + (targetScale - currentScale) * progress;
+          });
+
+          Object.entries(animatedFlex).forEach(([key, currentFlexValue]) => {
+            const targetFlexValue = targetFlex[key] || 1;
+            currentFlex[key] =
+              currentFlexValue +
+              (targetFlexValue - currentFlexValue) * progress;
+          });
+
+          // Initialize missing keys
+          Object.entries(targetScales).forEach(([key, targetScale]) => {
+            if (currentScales[key] === undefined) {
+              currentScales[key] = 1 + (targetScale - 1) * progress;
+            }
+          });
+
+          Object.entries(targetFlex).forEach(([key, targetFlexValue]) => {
+            if (currentFlex[key] === undefined) {
+              currentFlex[key] = 1 + (targetFlexValue - 1) * progress;
+            }
+          });
+
+          setAnimatedScales(currentScales);
+          setAnimatedFlex(currentFlex);
+
+          if (rawProgress < 1) {
+            requestAnimationFrame(animate);
           }
-        });
+        };
 
-        Object.entries(targetFlex).forEach(([key, targetFlexValue]) => {
-          if (currentFlex[key] === undefined) {
-            currentFlex[key] = 1 + (targetFlexValue - 1) * progress;
-          }
-        });
+        requestAnimationFrame(animate);
+      }
+    };
 
-        setAnimatedScales(currentScales);
-        setAnimatedFlex(currentFlex);
-
-        if (rawProgress < 1) {
-          requestAnimationFrame(animate);
-        }
-      };
-
-      requestAnimationFrame(animate);
-    }
+    updatePredictions();
   }, [text, isAccessibleMode]);
 
   // Handle key press
@@ -464,7 +518,6 @@ const AccessibleKeyboard = () => {
     const heightMultiplier = Math.max(1.0, Math.min(2.0, keySize));
     const baseHeight = 60; // Base height in pixels
     const calculatedHeight = baseHeight * heightMultiplier;
-
 
     const handleClick = () => {
       handleKeyPress(keyValue);
