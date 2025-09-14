@@ -38,7 +38,7 @@ const socketManager = require("./server-socket");
 // TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.MONGO_SRV;
 // TODO change database name to the name you chose
-const databaseName = "FILL_ME_IN";
+const databaseName = process.env.DATABASE_NAME || "visual-ai-ze";
 
 // mongoose 7 warning
 mongoose.set("strictQuery", false);
@@ -110,8 +110,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-// hardcode port to 3000 for now
-const port = 3000;
+// Use environment port or default to 3000
+const port = process.env.PORT || 3000;
 const server = http.Server(app);
 socketManager.init(server);
 
