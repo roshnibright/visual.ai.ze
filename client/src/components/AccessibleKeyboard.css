@@ -5,7 +5,6 @@
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", sans-serif;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: #f8f9fa;
 }
 
@@ -585,9 +584,15 @@
 .keyboard-row {
   display: flex;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 0px; /* Reduced spacing between rows */
   gap: 8px;
   align-items: center; /* Center keys vertically within the row */
+  width: 100%;
+  max-width: 800px; /* Fixed width for consistent layout */
+  margin-left: auto;
+  margin-right: auto;
+  height: 60px; /* Fixed row height with padding for key growth */
+  padding: 20px 0; /* Vertical padding for keys to grow into */
 }
 
 .keyboard-row:last-child {
@@ -595,13 +600,13 @@
 }
 
 .punctuation-keys {
-  margin-bottom: 8px;
+  margin-bottom: 16px; /* Reduced spacing to match other rows */
   gap: 6px;
 }
 
 .punctuation-keys .key {
-  width: 45px;
-  height: 45px;
+  min-width: 45px;
+  min-height: 45px;
   font-size: 14px;
   padding: 10px 12px;
 }
@@ -611,8 +616,8 @@
 }
 
 .special-keys .key {
-  width: 100px;
-  height: 60px;
+  min-width: 100px;
+  min-height: 60px;
   font-size: 1.2rem;
 }
 
@@ -624,9 +629,9 @@
   font-weight: 500;
   padding: 16px 20px;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 60px;
-  height: 60px;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 60px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -638,6 +643,7 @@
   -webkit-tap-highlight-color: transparent;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
+  flex: 1; /* Equal distribution by default */
 }
 
 .key:hover {
@@ -687,18 +693,27 @@
 
 /* Key size variations */
 .key.normal {
-  flex: 1;
-  max-width: 80px;
+  flex: 0 0 auto;
 }
 
 .key.medium {
-  flex: 1.5;
-  max-width: 120px;
+  flex: 0 0 auto;
 }
 
 .key.large {
-  flex: 4;
-  max-width: 300px;
+  flex: 0 0 auto;
+}
+
+/* Override for dynamic sizing */
+.key.dynamic-size {
+  /* Let inline styles take precedence for flex and height */
+}
+
+/* Override any height constraints for accessible keys */
+.key.accessible {
+  min-height: unset !important;
+  max-height: none !important;
+  /* No CSS transitions - handled by JavaScript animation */
 }
 
 /* Special styling for space key */
