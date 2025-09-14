@@ -123,30 +123,6 @@ def word_prediction(input_text, word_list):
         return []
 
 
-completion_create_response = client.chat.completions.create(
-  messages=[
-      {
-          "role": "system",
-          "content": "You are a helpful assistant."
-      },
-      {
-          "role": "user",
-          "content": "Say hello to the world."
-      },
-      {
-          "role": "assistant",
-          "content": "Hello, world! 🌍"
-      }
-  ],
-  model="gpt-oss-120b",
-  stream=False,
-  max_completion_tokens=65536,
-  temperature=1,
-  top_p=1,
-  reasoning_effort="medium"
-)
-
-print(completion_create_response)
 
 if __name__ == "__main__":
 
