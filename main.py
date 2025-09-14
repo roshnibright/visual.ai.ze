@@ -7,7 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "https://visual-ai-ze.onrender.com/",  # frontend dev server
+    "https://visual-ai-ze.onrender.com",  # production frontend
+    "http://localhost:5173",  # local development
+    "http://localhost:3000",  # local development (if accessing directly)
 ]
 
 app.add_middleware(
@@ -32,7 +34,7 @@ class WordInput(BaseModel):
     word_list: List[str]
 
 
-@app.post("/predict-char")
+@app.post("/api/predict-char")
 def predict_char(data: CharInput):
     try:
         return char_prediction(data.text)

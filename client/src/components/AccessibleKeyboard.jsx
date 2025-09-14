@@ -230,16 +230,18 @@ const AccessibleKeyboard = () => {
   // }
   const predictChar = async (text) => {
     try {
-      const response = await fetch(
-        "https://visual-ai-ze.onrender.com/predict-char",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text }),
-        }
-      );
+      // Determine API URL based on environment
+      const apiUrl = import.meta.env.DEV
+        ? "http://localhost:8000/predict-char" // Development (Python server)
+        : "/api/predict-char"; // Production (Node.js server)
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
 
       const data = await response.json();
       console.log("Character Predictions:", data);
@@ -298,12 +300,12 @@ const AccessibleKeyboard = () => {
       keyboardLayout.flat().forEach((key) => {
         sizes[key] = baseSize;
       });
-      
+
       // Also set base sizes for special keys
       Object.keys(specialKeys).forEach((key) => {
         sizes[key] = baseSize;
       });
-      
+
       // Set base sizes for additional special keys that appear in the keyboard
       ["SHIFT", "BACKSPACE", "ENTER"].forEach((key) => {
         sizes[key] = baseSize;
