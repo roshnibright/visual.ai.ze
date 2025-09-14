@@ -1,7 +1,36 @@
-import socketIOClient from "socket.io-client";
-import { post } from "./utilities";
-const endpoint = window.location.hostname + ":" + window.location.port;
-export const socket = socketIOClient(endpoint);
-socket.on("connect", () => {
-  post("/api/initsocket", { socketid: socket.id });
-});
+// client-socket.js
+let socket = null;
+
+export function connectWebSocket(onMessageCallback) {
+  if (socket) return socket; // reuse existing connection
+
+  socket = new WebSocket('ws://localhost:8080');
+
+  socket.onopen = () => {
+    console.log('Connected to WebSocket server');
+  };
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (onMessageCallback) onMessageCallback(data);
+  };
+
+  socket.onclose = () => {
+    console.log('WebSocket connection closed');
+    socket = null;
+  };
+
+  socket.onerror = (err) => {
+    console.error('WebSocket error:', err);
+  };
+
+  return socket;
+}
+
+export function sendMessage(message) {
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(message);
+  } else {
+    console.warn('WebSocket not connected yet');
+  }
+}
