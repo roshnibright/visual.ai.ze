@@ -240,6 +240,14 @@ const AccessibleKeyboard = () => {
     return rowHeights;
   }, [keySizes, isAccessibleMode, keyboardLayout]);
 
+  useEffect(() => {
+    const ws = connectWebSocket((data) => {
+      setPredictions(data.predictions || []);
+    });
+
+    return () => ws?.close();
+  }, []);
+
   // Update predictions and key sizes when text changes
   useEffect(() => {
     console.log("Text updated:", text); // Debug log
@@ -251,6 +259,8 @@ const AccessibleKeyboard = () => {
 
   // Handle key press
   const handleKeyPress = (key) => {
+    sendMessage(key); 
+  
     console.log("=== handleKeyPress called ===");
     console.log("Key pressed:", key, "Current text before:", text);
     console.log("Key type:", typeof key, "Key value:", key);
