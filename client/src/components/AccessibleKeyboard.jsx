@@ -228,48 +228,27 @@ const AccessibleKeyboard = () => {
   //   "a": { "e": 0.3, "n": 0.2, "t": 0.15, "r": 0.1, "s": 0.1 },
   //   "b": { "e": 0.4, "a": 0.2, "i": 0.15, "o": 0.1, "u": 0.1 }
   // }
-  const generatePredictions = useCallback((currentText) => {
-    const predictions = {};
-    const lastChar = currentText.slice(-1).toLowerCase();
+  const predictChar = async (text) => {
+    const response = await fetch("http://localhost:8000/predict-char", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text })
+    });
 
-    if (lastChar && /[a-z\s.,!?;:'"-]/.test(lastChar)) {
-      // Simulate backend response with random probabilities
-      const allChars = "abcdefghijklmnopqrstuvwxyz .,!?;:'\"-";
-      const numPredictions = Math.floor(Math.random() * 5) + 1; // 1-5 predictions
-      const selectedChars = [];
+    const data = await response.json();
+    console.log("Character Predictions:", data);
+    return data;
+  };
 
-      // Randomly select characters
-      while (selectedChars.length < numPredictions) {
-        const randomChar =
-          allChars[Math.floor(Math.random() * allChars.length)];
-        if (!selectedChars.includes(randomChar)) {
-          selectedChars.push(randomChar);
-        }
-      }
+  const generatePredictions = useCallback(async (currentText) => {
+    if (!currentText || currentText.length === 0) return {};
 
-      // Generate random probabilities that sum to 1
-      const probabilities = [];
-      let remaining = 1;
-      for (let i = 0; i < selectedChars.length; i++) {
-        if (i === selectedChars.length - 1) {
-          probabilities.push(remaining);
-        } else {
-          const prob = Math.random() * remaining * 0.8; // Leave some for remaining
-          probabilities.push(prob);
-          remaining -= prob;
-        }
-      }
-
-      // Create prediction object
-      const charPredictions = {};
-      selectedChars.forEach((char, index) => {
-        charPredictions[char] = probabilities[index];
-      });
-
-      predictions[lastChar] = charPredictions;
-    }
-
-    return predictions;
+    const lastChar = currentText[currentText.length - 1];
+    const predictions = await predictChar(currentText);
+    console.log("Predictions:", predictions);
+    return { [lastChar]: predictions };
   }, []);
 
   // Calculate key sizes based on predictions with same-row width adjustment
@@ -342,7 +321,6 @@ const AccessibleKeyboard = () => {
 
   // Update predictions and key sizes when text changes
   useEffect(() => {
-    console.log("Text updated:", text); // Debug log
     const newPredictions = generatePredictions(text);
     setPredictions(newPredictions);
     const newSizes = calculateKeySizes(newPredictions);
@@ -415,33 +393,22 @@ const AccessibleKeyboard = () => {
   const handleKeyPress = (key) => {
     // sendMessage(key);
 
-    console.log("=== handleKeyPress called ===");
-    console.log("Key pressed:", key, "Current text before:", text);
-    console.log("Key type:", typeof key, "Key value:", key);
-
     if (key === "SPACE") {
-      console.log("Processing SPACE key");
       setText((prev) => {
         const newText = prev + " ";
-        console.log("Adding space, new text:", newText);
         return newText;
       });
     } else if (key === "BACKSPACE") {
-      console.log("Processing BACKSPACE key");
       setText((prev) => {
         const newText = prev.slice(0, -1);
-        console.log("Backspace, new text:", newText);
         return newText;
       });
     } else if (key === "ENTER") {
-      console.log("Processing ENTER key");
       setText((prev) => {
         const newText = prev + "\n";
-        console.log("Enter, new text:", newText);
         return newText;
       });
     } else if (key === "SHIFT") {
-      console.log("Processing SHIFT key - no action");
       return;
     } else if (
       key === "." ||
@@ -454,21 +421,16 @@ const AccessibleKeyboard = () => {
       key === '"' ||
       key === "-"
     ) {
-      console.log("Processing punctuation key:", key);
       setText((prev) => {
         const newText = prev + key;
-        console.log("Adding punctuation", key, "new text:", newText);
         return newText;
       });
     } else {
-      console.log("Processing letter key:", key);
       setText((prev) => {
         const newText = prev + key.toLowerCase();
-        console.log("Adding letter", key, "new text:", newText);
         return newText;
       });
     }
-    console.log("=== handleKeyPress finished ===");
   };
 
   // Handle regular keyboard events
@@ -503,31 +465,14 @@ const AccessibleKeyboard = () => {
     const baseHeight = 60; // Base height in pixels
     const calculatedHeight = baseHeight * heightMultiplier;
 
-    // Debug logging for key sizing
-    if (keySize > 1.1) {
-      console.log(
-        `Key ${keyValue}: size=${keySize}, flex=${flexValue}, height=${calculatedHeight}px`
-      );
-    }
-
-    // Always log height for debugging
-    console.log(
-      `Key ${keyValue}: height=${calculatedHeight}px, isAccessibleMode=${isAccessibleMode}`
-    );
 
     const handleClick = () => {
-      console.log("Key clicked:", keyValue, "Current text:", text); // Debug log
-      console.log("About to call handleKeyPress with:", keyValue);
       handleKeyPress(keyValue);
-      console.log("handleKeyPress called for:", keyValue);
     };
 
     const handleTouch = (e) => {
       e.preventDefault();
-      console.log("Key touched:", keyValue, "Current text:", text); // Debug log
-      console.log("About to call handleKeyPress with:", keyValue);
       handleKeyPress(keyValue);
-      console.log("handleKeyPress called for:", keyValue);
     };
 
     return (
