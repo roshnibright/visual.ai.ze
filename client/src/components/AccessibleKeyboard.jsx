@@ -10,6 +10,8 @@ const AccessibleKeyboard = () => {
   const [isAccessibleMode, setIsAccessibleMode] = useState(true);
   const [selectedSubject, setSelectedSubject] = useState('math');
   const [isNavOpen, setIsNavOpen] = useState(true);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [wordsPerPage] = useState(8); // Number of words to display at once
 
   // Subject-specific word sets
   const subjectWords = {
@@ -392,6 +394,32 @@ const AccessibleKeyboard = () => {
     });
   };
 
+  // Handle arrow navigation
+  const handleScrollUp = () => {
+    setCurrentWordIndex(prev => Math.max(0, prev - wordsPerPage));
+  };
+
+  const handleScrollDown = () => {
+    const maxIndex = Math.max(0, subjectWords[selectedSubject].words.length - wordsPerPage);
+    setCurrentWordIndex(prev => Math.min(maxIndex, prev + wordsPerPage));
+  };
+
+  // Reset word index when subject changes
+  const handleSubjectChange = (subjectKey) => {
+    setSelectedSubject(subjectKey);
+    setCurrentWordIndex(0);
+  };
+
+  // Get currently visible words
+  const getVisibleWords = () => {
+    const words = subjectWords[selectedSubject].words;
+    return words.slice(currentWordIndex, currentWordIndex + wordsPerPage);
+  };
+
+  // Check if navigation arrows should be enabled
+  const canScrollUp = currentWordIndex > 0;
+  const canScrollDown = currentWordIndex + wordsPerPage < subjectWords[selectedSubject].words.length;
+
   return (
     <div
       className={`accessible-keyboard-container ${
@@ -418,7 +446,7 @@ const AccessibleKeyboard = () => {
                 <button
                   key={key}
                   className={`subject-tab ${selectedSubject === key ? 'active' : ''}`}
-                  onClick={() => setSelectedSubject(key)}
+                  onClick={() => handleSubjectChange(key)}
                   aria-label={`Switch to ${subject.name}`}
                 >
                   <span className="subject-icon">{subject.icon}</span>
@@ -428,11 +456,26 @@ const AccessibleKeyboard = () => {
             </div>
             
             <div className="word-display">
-              <h4>{subjectWords[selectedSubject].name} Words</h4>
-              <div className="word-list">
-                {subjectWords[selectedSubject].words.map((word, index) => (
+              <div className="word-header">
+                <h4>{subjectWords[selectedSubject].name} Words</h4>
+                <div className="word-counter">
+                  {Math.min(currentWordIndex + wordsPerPage, subjectWords[selectedSubject].words.length)} of {subjectWords[selectedSubject].words.length}
+                </div>
+              </div>
+              
+              <button 
+                className={`nav-arrow nav-arrow-up ${!canScrollUp ? 'disabled' : ''}`}
+                onClick={handleScrollUp}
+                disabled={!canScrollUp}
+                aria-label="Show previous words"
+              >
+                ↑
+              </button>
+              
+              <div className="word-list-fixed">
+                {getVisibleWords().map((word, index) => (
                   <button
-                    key={index}
+                    key={currentWordIndex + index}
                     className="word-item"
                     onClick={() => handleWordClick(word)}
                     aria-label={`Add word: ${word}`}
@@ -441,6 +484,15 @@ const AccessibleKeyboard = () => {
                   </button>
                 ))}
               </div>
+              
+              <button 
+                className={`nav-arrow nav-arrow-down ${!canScrollDown ? 'disabled' : ''}`}
+                onClick={handleScrollDown}
+                disabled={!canScrollDown}
+                aria-label="Show next words"
+              >
+                ↓
+              </button>
             </div>
           </>
         )}
@@ -450,7 +502,7 @@ const AccessibleKeyboard = () => {
       <div className={`main-content ${isNavOpen ? 'nav-open' : 'nav-closed'}`}>
       <div className="header-controls">
         <div className="app-header">
-          <h1 className="app-title">Smart Keyboard</h1>
+          <h1 className="app-title">easy keys</h1>
           <p className="app-subtitle">
             Accessible typing with intelligent predictions
           </p>
