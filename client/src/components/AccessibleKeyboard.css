@@ -308,8 +308,8 @@
 }
 
 .punctuation-keys .key {
-  width: 45px;
-  height: 45px;
+  min-width: 45px;
+  min-height: 45px;
   font-size: 14px;
   padding: 10px 12px;
 }
@@ -319,8 +319,8 @@
 }
 
 .special-keys .key {
-  width: 100px;
-  height: 60px;
+  min-width: 100px;
+  min-height: 60px;
   font-size: 1.2rem;
 }
 
@@ -333,8 +333,8 @@
   padding: 16px 20px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 60px;
-  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -395,18 +395,22 @@
 
 /* Key size variations */
 .key.normal {
-  flex: 1;
-  max-width: 80px;
+  flex: 0 0 auto;
 }
 
 .key.medium {
-  flex: 1.5;
-  max-width: 120px;
+  flex: 0 0 auto;
 }
 
 .key.large {
-  flex: 4;
-  max-width: 300px;
+  flex: 0 0 auto;
+}
+
+/* Override for dynamic sizing */
+.key.dynamic-size {
+  flex: 0 0 auto !important;
+  width: var(--key-width, 60px) !important;
+  height: var(--key-height, 60px) !important;
 }
 
 /* Special styling for space key */

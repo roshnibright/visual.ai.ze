@@ -280,7 +280,7 @@ const AccessibleKeyboard = () => {
     // Calculate width and height multipliers (1.0 to 3.0x)
     const widthMultiplier = Math.max(1.0, Math.min(3.0, keySize));
     const heightMultiplier = Math.max(1.0, Math.min(2.0, keySize));
-    const baseWidth = 60; // Base width in pixels
+    const baseWidth = 80; // Base width in pixels
     const baseHeight = 60; // Base height in pixels
     const calculatedWidth = baseWidth * widthMultiplier;
     const calculatedHeight = baseHeight * heightMultiplier;
@@ -311,10 +311,10 @@ const AccessibleKeyboard = () => {
       <button
         className={`key ${keyInfo.width} ${
           isAccessibleMode ? "accessible" : "regular"
-        } ${className}`}
+        } ${isAccessibleMode ? "dynamic-size" : ""} ${className}`}
         style={{
-          width: `${calculatedWidth}px`,
-          height: `${calculatedHeight}px`,
+          "--key-width": `${calculatedWidth}px`,
+          "--key-height": `${calculatedHeight}px`,
           transition:
             "width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         }}
