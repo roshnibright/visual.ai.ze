@@ -8,6 +8,62 @@ const AccessibleKeyboard = () => {
   const [keySizes, setKeySizes] = useState({});
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAccessibleMode, setIsAccessibleMode] = useState(true);
+  const [selectedSubject, setSelectedSubject] = useState('math');
+  const [isNavOpen, setIsNavOpen] = useState(true);
+
+  // Subject-specific word sets
+  const subjectWords = {
+    math: {
+      name: 'Mathematics',
+      icon: '🔢',
+      words: [
+        'addition', 'subtraction', 'multiplication', 'division', 'equation',
+        'algebra', 'geometry', 'calculus', 'trigonometry', 'statistics',
+        'probability', 'fraction', 'decimal', 'percentage', 'ratio',
+        'polynomial', 'derivative', 'integral', 'matrix', 'vector',
+        'theorem', 'proof', 'hypothesis', 'variable', 'constant',
+        'function', 'domain', 'range', 'limit', 'infinity',
+        'sine', 'cosine', 'tangent', 'logarithm', 'exponential',
+        'quadratic', 'linear', 'parabola', 'circle', 'triangle',
+        'rectangle', 'square', 'polygon', 'diameter', 'radius',
+        'circumference', 'area', 'volume', 'perimeter', 'angle'
+      ]
+    },
+    chemistry: {
+      name: 'Chemistry',
+      icon: '🧪',
+      words: [
+        'atom', 'molecule', 'element', 'compound', 'reaction',
+        'electron', 'proton', 'neutron', 'nucleus', 'orbital',
+        'periodic', 'table', 'hydrogen', 'oxygen', 'carbon',
+        'nitrogen', 'sodium', 'chlorine', 'calcium', 'iron',
+        'bond', 'ionic', 'covalent', 'metallic', 'polar',
+        'solution', 'solvent', 'solute', 'concentration', 'molarity',
+        'acid', 'base', 'pH', 'buffer', 'titration',
+        'oxidation', 'reduction', 'catalyst', 'enzyme', 'polymer',
+        'crystalline', 'amorphous', 'phase', 'equilibrium', 'kinetics',
+        'thermodynamics', 'enthalpy', 'entropy', 'activation', 'energy',
+        'isotope', 'radioactive', 'decay', 'fusion', 'fission'
+      ]
+    },
+    english: {
+      name: 'English',
+      icon: '📚',
+      words: [
+        'literature', 'poetry', 'prose', 'novel', 'story',
+        'character', 'plot', 'theme', 'setting', 'conflict',
+        'metaphor', 'simile', 'alliteration', 'personification', 'imagery',
+        'grammar', 'syntax', 'vocabulary', 'sentence', 'paragraph',
+        'noun', 'verb', 'adjective', 'adverb', 'pronoun',
+        'subject', 'predicate', 'clause', 'phrase', 'conjunction',
+        'essay', 'thesis', 'argument', 'evidence', 'analysis',
+        'narrative', 'exposition', 'dialogue', 'monologue', 'soliloquy',
+        'tragedy', 'comedy', 'drama', 'satire', 'irony',
+        'symbolism', 'allegory', 'foreshadowing', 'flashback', 'climax',
+        'resolution', 'denouement', 'protagonist', 'antagonist', 'foil'
+      ]
+    }
+  };
 
   // QWERTY keyboard layout
   const keyboardLayout = [
@@ -328,12 +384,70 @@ const AccessibleKeyboard = () => {
     );
   };
 
+  // Handle word click to add to text
+  const handleWordClick = (word) => {
+    setText(prev => {
+      const newText = prev + (prev && !prev.endsWith(' ') ? ' ' : '') + word + ' ';
+      return newText;
+    });
+  };
+
   return (
     <div
       className={`accessible-keyboard-container ${
         isDarkMode ? "dark-mode" : "light-mode"
       }`}
     >
+      {/* Side Navigation */}
+      <div className={`side-nav ${isNavOpen ? 'open' : 'closed'}`}>
+        <div className="nav-header">
+          <h3>Subjects</h3>
+          <button 
+            className="nav-toggle"
+            onClick={() => setIsNavOpen(!isNavOpen)}
+            aria-label={isNavOpen ? 'Close navigation' : 'Open navigation'}
+          >
+            {isNavOpen ? '←' : '→'}
+          </button>
+        </div>
+        
+        {isNavOpen && (
+          <>
+            <div className="subject-tabs">
+              {Object.entries(subjectWords).map(([key, subject]) => (
+                <button
+                  key={key}
+                  className={`subject-tab ${selectedSubject === key ? 'active' : ''}`}
+                  onClick={() => setSelectedSubject(key)}
+                  aria-label={`Switch to ${subject.name}`}
+                >
+                  <span className="subject-icon">{subject.icon}</span>
+                  <span className="subject-name">{subject.name}</span>
+                </button>
+              ))}
+            </div>
+            
+            <div className="word-display">
+              <h4>{subjectWords[selectedSubject].name} Words</h4>
+              <div className="word-list">
+                {subjectWords[selectedSubject].words.map((word, index) => (
+                  <button
+                    key={index}
+                    className="word-item"
+                    onClick={() => handleWordClick(word)}
+                    aria-label={`Add word: ${word}`}
+                  >
+                    {word}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Main Content */}
+      <div className={`main-content ${isNavOpen ? 'nav-open' : 'nav-closed'}`}>
       <div className="header-controls">
         <div className="app-header">
           <h1 className="app-title">Smart Keyboard</h1>
@@ -474,6 +588,7 @@ const AccessibleKeyboard = () => {
             </>
           );
         })()}
+      </div>
       </div>
     </div>
   );
