@@ -25,9 +25,13 @@ Roshni: Coded and tested the keyboard interface in React, connected frontend and
 
 All team members contributed to brainstorming and iterating upon the initial idea. 
 
+**Challenges we ran into**
+
+A lot of our challenges revolved around pinning down percisely what we wanted to do, and maintaining confidence in our idea. After we had started, it seemed as if we wouldn't create a project of much technical complexity, which discouraged us, but after continuing to work on our project, we discovered that the bulk of our project's technical complexity lay in the implementation of the frontend. 
+
 **Accomplishments that we're proud of**
 
-We're very happy that we were able to get our tool working! 
+We're very happy that we were able to get our tool working! We're also really glad we were able to create a tool, with input from a potential user and their family member, that could potentially help people with motor function disabilities. 
 
 **What we learned**
 
@@ -35,4 +39,4 @@ Fiona has learned not to make absentmindedly accept pull requests at 12am. Fiona
 
 **What's next for our project**
 
-Although the 24-hour time frame caused us to focus on implementing only the most important features for our project, during the brainstorming process, we came up with several enhancements that can be implemented to make our tool even more capable and easy to use for those with motor impairments. In the future, we could incorporate a touch sensor into the product to adjust our suggestions based on the pressure and angle at which the specific user presses the keys. It is also possible for us to use sensors to see where the user is moving their hand and adjust the keys in that direction. 
+Although the 24-hour time frame caused us to focus on implementing only the most important features for our project, during the brainstorming process, we came up with several enhancements that can be implemented to make our tool even more capable and easy to use for those with motor impairments. In the future, we could incorporate a touch sensor into the product to adjust our suggestions based on the pressure and angle at which the specific user presses the keys. It is also possible for us to use sensors to see where the user is moving their hand and adjust the keys in that direction. We could also implement some sliders for users to customize (which would allow them to control the degree by which the keys expand, the color scheme, etc.) and could make the tool fit a broader base of users better. 
