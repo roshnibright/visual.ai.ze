@@ -1,10 +1,38 @@
 **Inspiration**
 One of our team members has a close family friend with nonverbal autism and impaired fine motor skills. Traditional tools like tablets and sign language weren’t viable for him, and existing solutions failed to adapt to his specific needs. His experience motivated us to design a tool that isn’t just functional, but would enhance his day to day life by making his means of communication faster and more convenient.
 
+Tools often overlook issues that affect daily tasks able-bodied people consider trivial. Whether it be pointing to a cute dog on the street, or even beating your friends in monkeytype during your linear algebra lecture, products designed to help people with impaired fine motor skills are expensive and inaccessible to the people who need them the most.
+
 **What it does**
-Adaptive Hover Keys: Letters enlarge on hover, reducing precision requirements.
 Context-Aware Prediction: Based on typed prefixes (e.g., “sch”), the system predicts likely next letters (“o” or “e”) and enlarges them for easier selection.
 Lightweight & Accessible: Entirely web-based, deployable on iPads or desktops—no specialized devices needed.
 
 **How we built it**
+We built an adaptive, browser-based keyboard designed for accessibility. Unlike static solutions, our system dynamically adapts to the user’s context. By intelligently enlarging predicted letters and offering context-aware suggestions, we make typing faster, less error-prone, and more inclusive; all without requiring specialized hardware.
 
+Our backend was built in Python with Cerberus integration
+
+Our frontend was built in React with GET/POST API to retrieve data from the backend server. 
+
+We designed the UI/UX in Figma, and we used the Windsurf IDE. 
+
+**Individual Contributions**
+
+Ava: Designed UI/UX in Figma, added and tested side tabs for subject-specific words. 
+Fiona: Coded backend and wrote prompts, tested WebSockets. (Wrote Plume prompts!!!!!) 
+Jay: Coded backend and edited prompts, connected frontend and backend. 
+Roshni: Coded and tested the keyboard interface in React, connected frontend and backend. 
+
+All team members contributed to brainstorming and iterating upon the initial idea. 
+
+**Accomplishments that we're proud of**
+
+We got the 
+
+**What we learned**
+
+Fiona has learned not to make absentmindedly accept pull requests at 12am. Fiona is very sorry for her errors. 
+
+**What's next for our project**
+
+Although the 24-hour time frame caused us to  , during the brainstorming process, we came up with several enhancements that can be implemented to make our tool even more capable and easy to use for those with motor impairments. 
