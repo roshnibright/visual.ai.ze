@@ -4,10 +4,10 @@ let socket = null;
 export function connectWebSocket(onMessageCallback) {
   if (socket) return socket; // reuse existing connection
 
-  socket = new WebSocket('ws://localhost:8080');
+  socket = new WebSocket("ws://localhost:3000");
 
   socket.onopen = () => {
-    console.log('Connected to WebSocket server');
+    console.log("Connected to WebSocket server");
   };
 
   socket.onmessage = (event) => {
@@ -16,12 +16,12 @@ export function connectWebSocket(onMessageCallback) {
   };
 
   socket.onclose = () => {
-    console.log('WebSocket connection closed');
+    console.log("WebSocket connection closed");
     socket = null;
   };
 
   socket.onerror = (err) => {
-    console.error('WebSocket error:', err);
+    console.error("WebSocket error:", err);
   };
 
   return socket;
@@ -31,6 +31,9 @@ export function sendMessage(message) {
   if (socket && socket.readyState === WebSocket.OPEN) {
     socket.send(message);
   } else {
-    console.warn('WebSocket not connected yet');
+    console.warn("WebSocket not connected yet");
   }
 }
+
+// Export the socket variable for use in other components
+export { socket };

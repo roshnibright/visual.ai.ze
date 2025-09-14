@@ -332,13 +332,13 @@ const AccessibleKeyboard = () => {
     return {};
   }, []);
 
-  useEffect(() => {
-    const ws = connectWebSocket((data) => {
-      setPredictions(data.predictions || []);
-    });
+  //   useEffect(() => {
+  //     const ws = connectWebSocket((data) => {
+  //       setPredictions(data.predictions || []);
+  //     });
 
-    return () => ws?.close();
-  }, []);
+  //     return () => ws?.close();
+  //   }, []);
 
   // Update predictions and key sizes when text changes
   useEffect(() => {
@@ -413,8 +413,8 @@ const AccessibleKeyboard = () => {
 
   // Handle key press
   const handleKeyPress = (key) => {
-    sendMessage(key); 
-  
+    // sendMessage(key);
+
     console.log("=== handleKeyPress called ===");
     console.log("Key pressed:", key, "Current text before:", text);
     console.log("Key type:", typeof key, "Key value:", key);

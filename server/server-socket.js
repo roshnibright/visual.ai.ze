@@ -1,49 +1,49 @@
-const WebSocket = require('ws');
+let io;
 
-// Create a WebSocket server on port 8080
-const wss = new WebSocket.Server({ port: 8080 });
+const userToSocketMap = {}; // maps user ID to socket object
+const socketToUserMap = {}; // maps socket ID to user object
 
-console.log("WebSocket server running on ws://localhost:8080");
+const getAllConnectedUsers = () => Object.values(socketToUserMap);
+const getSocketFromUserID = (userid) => userToSocketMap[userid];
+const getUserFromSocketID = (socketid) => socketToUserMap[socketid];
+const getSocketFromSocketID = (socketid) => io.sockets.sockets.get(socketid);
 
-// Store connected clients
-const clients = new Set();
-
-wss.on('connection', (ws) => {
-  console.log('New client connected');
-  clients.add(ws);
-
-  // Handle incoming messages from clients
-  ws.on('message', async (message) => {
-    console.log('Received:', message.toString());
-
-    // Here, you could call your Python backend via HTTP or spawn a child process
-    // Example: get predicted next letters from Python API
-    const predicted = await getPredictionsFromPython(message.toString());
-
-    // Send prediction back to this client
-    ws.send(JSON.stringify({ predictions: predicted }));
-  });
-
-  ws.on('close', () => {
-    console.log('Client disconnected');
-    clients.delete(ws);
-  });
-});
-
-// Example function to call Python backend
-async function getPredictionsFromPython(input) {
-  const fetch = (await import('node-fetch')).default; // Node 18+ or use axios
-  try {
-    const res = await fetch('http://localhost:5000/predict', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ input }),
-    });
-    const data = await res.json();
-    return data.predictions;
-  } catch (err) {
-    console.error(err);
-    return [];
+const addUser = (user, socket) => {
+  const oldSocket = userToSocketMap[user._id];
+  if (oldSocket && oldSocket.id !== socket.id) {
+    // there was an old tab open for this user, force it to disconnect
+    // FIXME: is this the behavior you want?
+    oldSocket.disconnect();
+    delete socketToUserMap[oldSocket.id];
   }
-}
 
+  userToSocketMap[user._id] = socket;
+  socketToUserMap[socket.id] = user;
+};
+
+const removeUser = (user, socket) => {
+  if (user) delete userToSocketMap[user._id];
+  delete socketToUserMap[socket.id];
+};
+
+module.exports = {
+  init: (http) => {
+    io = require("socket.io")(http);
+
+    io.on("connection", (socket) => {
+      console.log(`socket has connected ${socket.id}`);
+      socket.on("disconnect", (reason) => {
+        const user = getUserFromSocketID(socket.id);
+        removeUser(user, socket);
+      });
+    });
+  },
+
+  addUser: addUser,
+  removeUser: removeUser,
+
+  getSocketFromUserID: getSocketFromUserID,
+  getUserFromSocketID: getUserFromSocketID,
+  getSocketFromSocketID: getSocketFromSocketID,
+  getIo: () => io,
+};
