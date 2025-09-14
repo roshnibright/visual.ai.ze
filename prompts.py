@@ -25,33 +25,37 @@ Do this using:
 Previous Context: "I need to go to the"
 Current Word: "sto"
 
-Expected Output (Python Array):
-```python array of tuples
-[
-    ("r", 0.80),
-    ("p", 0.10),
-]
+Expected Output (Python Array): [("r", 0.80), ("p", 0.10)]
 
 This is because "store" or "storage" are very likely to follow. "Stop" is also a possibility, but it is not as likely.
 
 
 **Example 2:**
-Previous Context: "I am going to eat a"
+Previous Context: "I am going to eat a "
 Current Word: ""
 
-Expected Output (Python Array):
-```python array of tuples
-[]
+Expected Output (Python Array): []
 
 This is because there is no clear next character to predict.
 
+**Example 3:**
+Previous Context: "I am going to eat an "
+Current Word: ""
+
+Expected Output (Python Array): [("a", 0.80), ("e", 0.80), ("i", 0.80), ("o", 0.80), ("u", 0.80),]
+
+This is because a vowel is likely to come next
 
 **Requirements:**
 
 - Use confidence values between 0.0 and 1.0
 - Order predictions from highest to lowest probability
-- Include 5 or fewer characters
-- You must return a python array of tuples with (character, confidence)
+- Include 5 or fewer characters. Do not include characters you do not think are likely.
+- You must return ONLY a python array of tuples with (character, confidence) or an empty python array []
+- DO NOT include any explanatory text, comments, or markdown formatting
+- DO NOT start with "Based on" or any other explanation
+- Your response must start with [ and end with ]
+- Example valid responses: [("i", 0.8), ("n", 0.2)] or []
 
  """
 
@@ -115,7 +119,12 @@ This is because any of these options are actually possible. You could be a footb
 
 - Use condifence values between 0.0 and 1.0
 - Order predictions from highest to lowest probability
-- Include 5 or fewer words
-- You must return a python array of tuples with (word, confidence)
+- Include 5 or fewer words. Do not include words you do not think are likely.
+- You must return ONLY a python array of tuples with (character, confidence) or an empty python array []
+- DO NOT include any explanatory text, comments, or markdown formatting.
+- DO NOT start with "Based on" or any other explanation
+- Your response must start with [ and end with ]
+- Example valid responses: [("cat", 0.8), ("dog", 0.2)] or []
+
 """
     return prompt
