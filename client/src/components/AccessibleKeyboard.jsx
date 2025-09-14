@@ -6,63 +6,193 @@ const AccessibleKeyboard = () => {
   const [predictions, setPredictions] = useState({});
   const [focusedKey, setFocusedKey] = useState(null);
   const [keySizes, setKeySizes] = useState({});
+  const [animatedScales, setAnimatedScales] = useState({});
+  const [animatedFlex, setAnimatedFlex] = useState({});
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isAccessibleMode, setIsAccessibleMode] = useState(true);
-  const [selectedSubject, setSelectedSubject] = useState('math');
+  const [selectedSubject, setSelectedSubject] = useState("math");
   const [isNavOpen, setIsNavOpen] = useState(true);
 
   // Subject-specific word sets
   const subjectWords = {
     math: {
-      name: 'Mathematics',
-      icon: '🔢',
+      name: "Mathematics",
+      icon: "🔢",
       words: [
-        'addition', 'subtraction', 'multiplication', 'division', 'equation',
-        'algebra', 'geometry', 'calculus', 'trigonometry', 'statistics',
-        'probability', 'fraction', 'decimal', 'percentage', 'ratio',
-        'polynomial', 'derivative', 'integral', 'matrix', 'vector',
-        'theorem', 'proof', 'hypothesis', 'variable', 'constant',
-        'function', 'domain', 'range', 'limit', 'infinity',
-        'sine', 'cosine', 'tangent', 'logarithm', 'exponential',
-        'quadratic', 'linear', 'parabola', 'circle', 'triangle',
-        'rectangle', 'square', 'polygon', 'diameter', 'radius',
-        'circumference', 'area', 'volume', 'perimeter', 'angle'
-      ]
+        "addition",
+        "subtraction",
+        "multiplication",
+        "division",
+        "equation",
+        "algebra",
+        "geometry",
+        "calculus",
+        "trigonometry",
+        "statistics",
+        "probability",
+        "fraction",
+        "decimal",
+        "percentage",
+        "ratio",
+        "polynomial",
+        "derivative",
+        "integral",
+        "matrix",
+        "vector",
+        "theorem",
+        "proof",
+        "hypothesis",
+        "variable",
+        "constant",
+        "function",
+        "domain",
+        "range",
+        "limit",
+        "infinity",
+        "sine",
+        "cosine",
+        "tangent",
+        "logarithm",
+        "exponential",
+        "quadratic",
+        "linear",
+        "parabola",
+        "circle",
+        "triangle",
+        "rectangle",
+        "square",
+        "polygon",
+        "diameter",
+        "radius",
+        "circumference",
+        "area",
+        "volume",
+        "perimeter",
+        "angle",
+      ],
     },
     chemistry: {
-      name: 'Chemistry',
-      icon: '🧪',
+      name: "Chemistry",
+      icon: "🧪",
       words: [
-        'atom', 'molecule', 'element', 'compound', 'reaction',
-        'electron', 'proton', 'neutron', 'nucleus', 'orbital',
-        'periodic', 'table', 'hydrogen', 'oxygen', 'carbon',
-        'nitrogen', 'sodium', 'chlorine', 'calcium', 'iron',
-        'bond', 'ionic', 'covalent', 'metallic', 'polar',
-        'solution', 'solvent', 'solute', 'concentration', 'molarity',
-        'acid', 'base', 'pH', 'buffer', 'titration',
-        'oxidation', 'reduction', 'catalyst', 'enzyme', 'polymer',
-        'crystalline', 'amorphous', 'phase', 'equilibrium', 'kinetics',
-        'thermodynamics', 'enthalpy', 'entropy', 'activation', 'energy',
-        'isotope', 'radioactive', 'decay', 'fusion', 'fission'
-      ]
+        "atom",
+        "molecule",
+        "element",
+        "compound",
+        "reaction",
+        "electron",
+        "proton",
+        "neutron",
+        "nucleus",
+        "orbital",
+        "periodic",
+        "table",
+        "hydrogen",
+        "oxygen",
+        "carbon",
+        "nitrogen",
+        "sodium",
+        "chlorine",
+        "calcium",
+        "iron",
+        "bond",
+        "ionic",
+        "covalent",
+        "metallic",
+        "polar",
+        "solution",
+        "solvent",
+        "solute",
+        "concentration",
+        "molarity",
+        "acid",
+        "base",
+        "pH",
+        "buffer",
+        "titration",
+        "oxidation",
+        "reduction",
+        "catalyst",
+        "enzyme",
+        "polymer",
+        "crystalline",
+        "amorphous",
+        "phase",
+        "equilibrium",
+        "kinetics",
+        "thermodynamics",
+        "enthalpy",
+        "entropy",
+        "activation",
+        "energy",
+        "isotope",
+        "radioactive",
+        "decay",
+        "fusion",
+        "fission",
+      ],
     },
     english: {
-      name: 'English',
-      icon: '📚',
+      name: "English",
+      icon: "📚",
       words: [
-        'literature', 'poetry', 'prose', 'novel', 'story',
-        'character', 'plot', 'theme', 'setting', 'conflict',
-        'metaphor', 'simile', 'alliteration', 'personification', 'imagery',
-        'grammar', 'syntax', 'vocabulary', 'sentence', 'paragraph',
-        'noun', 'verb', 'adjective', 'adverb', 'pronoun',
-        'subject', 'predicate', 'clause', 'phrase', 'conjunction',
-        'essay', 'thesis', 'argument', 'evidence', 'analysis',
-        'narrative', 'exposition', 'dialogue', 'monologue', 'soliloquy',
-        'tragedy', 'comedy', 'drama', 'satire', 'irony',
-        'symbolism', 'allegory', 'foreshadowing', 'flashback', 'climax',
-        'resolution', 'denouement', 'protagonist', 'antagonist', 'foil'
-      ]
-    }
+        "literature",
+        "poetry",
+        "prose",
+        "novel",
+        "story",
+        "character",
+        "plot",
+        "theme",
+        "setting",
+        "conflict",
+        "metaphor",
+        "simile",
+        "alliteration",
+        "personification",
+        "imagery",
+        "grammar",
+        "syntax",
+        "vocabulary",
+        "sentence",
+        "paragraph",
+        "noun",
+        "verb",
+        "adjective",
+        "adverb",
+        "pronoun",
+        "subject",
+        "predicate",
+        "clause",
+        "phrase",
+        "conjunction",
+        "essay",
+        "thesis",
+        "argument",
+        "evidence",
+        "analysis",
+        "narrative",
+        "exposition",
+        "dialogue",
+        "monologue",
+        "soliloquy",
+        "tragedy",
+        "comedy",
+        "drama",
+        "satire",
+        "irony",
+        "symbolism",
+        "allegory",
+        "foreshadowing",
+        "flashback",
+        "climax",
+        "resolution",
+        "denouement",
+        "protagonist",
+        "antagonist",
+        "foil",
+      ],
+    },
   };
 
   // QWERTY keyboard layout
@@ -140,7 +270,7 @@ const AccessibleKeyboard = () => {
     return predictions;
   }, []);
 
-  // Calculate key sizes based on predictions
+  // Calculate key sizes based on predictions with same-row width adjustment
   const calculateKeySizes = useCallback(
     (predictions) => {
       const sizes = {};
@@ -155,7 +285,7 @@ const AccessibleKeyboard = () => {
 
       // Only apply dynamic sizing in accessible mode
       if (isAccessibleMode) {
-        // Increase size for predicted keys
+        // First pass: Calculate desired sizes for predicted keys
         Object.entries(predictions).forEach(([char, predictions]) => {
           Object.entries(predictions).forEach(([predictedChar, confidence]) => {
             let key;
@@ -185,6 +315,8 @@ const AccessibleKeyboard = () => {
             }
           });
         });
+
+        // No complex algorithm needed - CSS will handle the distribution
       }
 
       return sizes;
@@ -192,53 +324,11 @@ const AccessibleKeyboard = () => {
     [keyboardLayout, isAccessibleMode]
   );
 
-  // Calculate row heights based on largest key in each row
+  // Row heights are fixed - no dynamic height adjustment
   const calculateRowHeights = useCallback(() => {
-    if (!isAccessibleMode) return {};
-
-    const rowHeights = {};
-    const baseHeight = 60; // Base height in pixels
-    const maxHeightMultiplier = 2.0;
-
-    console.log("Calculating row heights, keySizes:", keySizes); // Debug log
-
-    // Calculate height for main keyboard rows
-    keyboardLayout.forEach((row, rowIndex) => {
-      const maxSizeInRow = Math.max(...row.map((key) => keySizes[key] || 1));
-      const heightMultiplier = Math.max(
-        1.0,
-        Math.min(maxHeightMultiplier, maxSizeInRow)
-      );
-      rowHeights[rowIndex] = baseHeight * heightMultiplier;
-    });
-
-    // Calculate height for punctuation row
-    const punctuationKeys = [".", ",", "!", "?", ";", ":", "'", '"', "-"];
-    const maxPunctuationSize = Math.max(
-      ...punctuationKeys.map((key) => keySizes[key] || 1)
-    );
-    const punctuationHeightMultiplier = Math.max(
-      1.0,
-      Math.min(maxHeightMultiplier, maxPunctuationSize)
-    );
-    rowHeights[keyboardLayout.length] =
-      baseHeight * punctuationHeightMultiplier;
-
-    // Calculate height for special keys row
-    const specialKeysList = ["SHIFT", "BACKSPACE", "ENTER"];
-    const maxSpecialSize = Math.max(
-      ...specialKeysList.map((key) => keySizes[key] || 1)
-    );
-    const specialHeightMultiplier = Math.max(
-      1.0,
-      Math.min(maxHeightMultiplier, maxSpecialSize)
-    );
-    rowHeights[keyboardLayout.length + 1] =
-      baseHeight * specialHeightMultiplier;
-
-    console.log("Calculated row heights:", rowHeights); // Debug log
-    return rowHeights;
-  }, [keySizes, isAccessibleMode, keyboardLayout]);
+    // Return empty object - rows maintain their fixed height
+    return {};
+  }, []);
 
   // Update predictions and key sizes when text changes
   useEffect(() => {
@@ -247,6 +337,68 @@ const AccessibleKeyboard = () => {
     setPredictions(newPredictions);
     const newSizes = calculateKeySizes(newPredictions);
     setKeySizes(newSizes);
+
+    // Animate scale and flex changes
+    if (isAccessibleMode) {
+      const targetScales = {};
+      const targetFlex = {};
+      Object.entries(newSizes).forEach(([key, size]) => {
+        const heightMultiplier = Math.max(1.0, Math.min(2.0, size));
+        const flexValue = Math.max(1.0, Math.min(3.0, size));
+        targetScales[key] = heightMultiplier;
+        targetFlex[key] = flexValue;
+      });
+
+      // Start animation
+      const startTime = Date.now();
+      const duration = 1000; // 1 second
+
+      // Easing function for smooth animation
+      const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const rawProgress = Math.min(elapsed / duration, 1);
+        const progress = easeOutCubic(rawProgress); // Apply easing
+
+        const currentScales = {};
+        const currentFlex = {};
+
+        Object.entries(animatedScales).forEach(([key, currentScale]) => {
+          const targetScale = targetScales[key] || 1;
+          currentScales[key] =
+            currentScale + (targetScale - currentScale) * progress;
+        });
+
+        Object.entries(animatedFlex).forEach(([key, currentFlexValue]) => {
+          const targetFlexValue = targetFlex[key] || 1;
+          currentFlex[key] =
+            currentFlexValue + (targetFlexValue - currentFlexValue) * progress;
+        });
+
+        // Initialize missing keys
+        Object.entries(targetScales).forEach(([key, targetScale]) => {
+          if (currentScales[key] === undefined) {
+            currentScales[key] = 1 + (targetScale - 1) * progress;
+          }
+        });
+
+        Object.entries(targetFlex).forEach(([key, targetFlexValue]) => {
+          if (currentFlex[key] === undefined) {
+            currentFlex[key] = 1 + (targetFlexValue - 1) * progress;
+          }
+        });
+
+        setAnimatedScales(currentScales);
+        setAnimatedFlex(currentFlex);
+
+        if (rawProgress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }
   }, [text, isAccessibleMode]);
 
   // Handle key press
@@ -333,20 +485,23 @@ const AccessibleKeyboard = () => {
     };
     const keySize = isAccessibleMode ? keySizes[keyValue] || size : 1;
 
-    // Calculate width and height multipliers (1.0 to 3.0x)
-    const widthMultiplier = Math.max(1.0, Math.min(3.0, keySize));
+    // Calculate flex value based on key size (1.0 to 3.0x)
+    const flexValue = Math.max(1.0, Math.min(3.0, keySize));
     const heightMultiplier = Math.max(1.0, Math.min(2.0, keySize));
-    const baseWidth = 80; // Base width in pixels
     const baseHeight = 60; // Base height in pixels
-    const calculatedWidth = baseWidth * widthMultiplier;
     const calculatedHeight = baseHeight * heightMultiplier;
 
     // Debug logging for key sizing
     if (keySize > 1.1) {
       console.log(
-        `Key ${keyValue}: size=${keySize}, width=${calculatedWidth}px, height=${calculatedHeight}px`
+        `Key ${keyValue}: size=${keySize}, flex=${flexValue}, height=${calculatedHeight}px`
       );
     }
+
+    // Always log height for debugging
+    console.log(
+      `Key ${keyValue}: height=${calculatedHeight}px, isAccessibleMode=${isAccessibleMode}`
+    );
 
     const handleClick = () => {
       console.log("Key clicked:", keyValue, "Current text:", text); // Debug log
@@ -369,10 +524,10 @@ const AccessibleKeyboard = () => {
           isAccessibleMode ? "accessible" : "regular"
         } ${isAccessibleMode ? "dynamic-size" : ""} ${className}`}
         style={{
-          "--key-width": `${calculatedWidth}px`,
-          "--key-height": `${calculatedHeight}px`,
-          transition:
-            "width 0.3s cubic-bezier(0.4, 0, 0.2, 1), height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          flex: isAccessibleMode ? animatedFlex[keyValue] || 1 : 1,
+          height: isAccessibleMode
+            ? `${60 * (animatedScales[keyValue] || 1)}px`
+            : "60px",
         }}
         onClick={handleClick}
         onTouchStart={handleTouch}
@@ -386,8 +541,9 @@ const AccessibleKeyboard = () => {
 
   // Handle word click to add to text
   const handleWordClick = (word) => {
-    setText(prev => {
-      const newText = prev + (prev && !prev.endsWith(' ') ? ' ' : '') + word + ' ';
+    setText((prev) => {
+      const newText =
+        prev + (prev && !prev.endsWith(" ") ? " " : "") + word + " ";
       return newText;
     });
   };
@@ -399,25 +555,27 @@ const AccessibleKeyboard = () => {
       }`}
     >
       {/* Side Navigation */}
-      <div className={`side-nav ${isNavOpen ? 'open' : 'closed'}`}>
+      <div className={`side-nav ${isNavOpen ? "open" : "closed"}`}>
         <div className="nav-header">
           <h3>Subjects</h3>
-          <button 
+          <button
             className="nav-toggle"
             onClick={() => setIsNavOpen(!isNavOpen)}
-            aria-label={isNavOpen ? 'Close navigation' : 'Open navigation'}
+            aria-label={isNavOpen ? "Close navigation" : "Open navigation"}
           >
-            {isNavOpen ? '←' : '→'}
+            {isNavOpen ? "←" : "→"}
           </button>
         </div>
-        
+
         {isNavOpen && (
           <>
             <div className="subject-tabs">
               {Object.entries(subjectWords).map(([key, subject]) => (
                 <button
                   key={key}
-                  className={`subject-tab ${selectedSubject === key ? 'active' : ''}`}
+                  className={`subject-tab ${
+                    selectedSubject === key ? "active" : ""
+                  }`}
                   onClick={() => setSelectedSubject(key)}
                   aria-label={`Switch to ${subject.name}`}
                 >
@@ -426,7 +584,7 @@ const AccessibleKeyboard = () => {
                 </button>
               ))}
             </div>
-            
+
             <div className="word-display">
               <h4>{subjectWords[selectedSubject].name} Words</h4>
               <div className="word-list">
@@ -447,148 +605,125 @@ const AccessibleKeyboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className={`main-content ${isNavOpen ? 'nav-open' : 'nav-closed'}`}>
-      <div className="header-controls">
-        <div className="app-header">
-          <h1 className="app-title">Smart Keyboard</h1>
-          <p className="app-subtitle">
-            Accessible typing with intelligent predictions
-          </p>
-        </div>
-        <div className="control-buttons">
-          <button
-            className={`mode-toggle ${isAccessibleMode ? "active" : ""}`}
-            onClick={() => setIsAccessibleMode(!isAccessibleMode)}
-            aria-label={`Switch to ${
-              isAccessibleMode ? "regular" : "accessible"
-            } keyboard mode`}
-          >
-            <span className="mode-icon">{isAccessibleMode ? "🧠" : "⌨️"}</span>
-            <span className="mode-label">
-              {isAccessibleMode ? "Smart" : "Regular"}
-            </span>
-          </button>
-          <button
-            className="theme-toggle"
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            aria-label={`Switch to ${isDarkMode ? "light" : "dark"} theme`}
-          >
-            {isDarkMode ? "☀️" : "🌙"}
-          </button>
-        </div>
-      </div>
-
-      <div className="text-display">
-        <textarea
-          value={text}
-          placeholder={
-            isAccessibleMode
-              ? "Type with smart predictions below..."
-              : "Type with regular keyboard below..."
-          }
-          className="text-input"
-          aria-label="Text input area"
-          readOnly={true}
-        />
-        {isAccessibleMode && (
-          <div className="prediction-display">
-            {Object.entries(predictions).map(([char, preds]) => (
-              <div key={char} className="prediction-group">
-                <span className="prediction-label">After "{char}":</span>
-                {Object.entries(preds)
-                  .sort(([, a], [, b]) => b - a)
-                  .slice(0, 5)
-                  .map(([predictedChar, confidence]) => (
-                    <span
-                      key={predictedChar}
-                      className="prediction-item"
-                      style={{ opacity: Math.max(0.3, confidence) }}
-                    >
-                      {predictedChar === " "
-                        ? "SPACE"
-                        : predictedChar.toUpperCase()}{" "}
-                      ({Math.round(confidence * 100)}%)
-                    </span>
-                  ))}
-              </div>
-            ))}
+      <div className={`main-content ${isNavOpen ? "nav-open" : "nav-closed"}`}>
+        <div className="header-controls">
+          <div className="app-header">
+            <h1 className="app-title">Smart Keyboard</h1>
+            <p className="app-subtitle">
+              Accessible typing with intelligent predictions
+            </p>
           </div>
-        )}
-      </div>
+          <div className="control-buttons">
+            <button
+              className={`mode-toggle ${isAccessibleMode ? "active" : ""}`}
+              onClick={() => setIsAccessibleMode(!isAccessibleMode)}
+              aria-label={`Switch to ${
+                isAccessibleMode ? "regular" : "accessible"
+              } keyboard mode`}
+            >
+              <span className="mode-icon">
+                {isAccessibleMode ? "🧠" : "⌨️"}
+              </span>
+              <span className="mode-label">
+                {isAccessibleMode ? "Smart" : "Regular"}
+              </span>
+            </button>
+            <button
+              className="theme-toggle"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label={`Switch to ${isDarkMode ? "light" : "dark"} theme`}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
+          </div>
+        </div>
 
-      <div
-        className="keyboard"
-        role="application"
-        aria-label="Accessible keyboard"
-      >
-        {(() => {
-          const rowHeights = calculateRowHeights();
+        <div className="text-display">
+          <textarea
+            value={text}
+            placeholder={
+              isAccessibleMode
+                ? "Type with smart predictions below..."
+                : "Type with regular keyboard below..."
+            }
+            className="text-input"
+            aria-label="Text input area"
+            readOnly={true}
+          />
+          {isAccessibleMode && (
+            <div className="prediction-display">
+              {Object.entries(predictions).map(([char, preds]) => (
+                <div key={char} className="prediction-group">
+                  <span className="prediction-label">After "{char}":</span>
+                  {Object.entries(preds)
+                    .sort(([, a], [, b]) => b - a)
+                    .slice(0, 5)
+                    .map(([predictedChar, confidence]) => (
+                      <span
+                        key={predictedChar}
+                        className="prediction-item"
+                        style={{ opacity: Math.max(0.3, confidence) }}
+                      >
+                        {predictedChar === " "
+                          ? "SPACE"
+                          : predictedChar.toUpperCase()}{" "}
+                        ({Math.round(confidence * 100)}%)
+                      </span>
+                    ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-          return (
-            <>
-              {keyboardLayout.map((row, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className="keyboard-row"
-                  style={{
-                    height: rowHeights[rowIndex]
-                      ? `${rowHeights[rowIndex]}px`
-                      : "auto",
-                    transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                >
-                  {row.map((key) => (
+        <div
+          className="keyboard"
+          role="application"
+          aria-label="Accessible keyboard"
+        >
+          {(() => {
+            const rowHeights = calculateRowHeights();
+
+            return (
+              <>
+                {keyboardLayout.map((row, rowIndex) => (
+                  <div key={rowIndex} className="keyboard-row">
+                    {row.map((key) => (
+                      <Key
+                        key={key}
+                        keyValue={key}
+                        isFocused={focusedKey === key}
+                        className="key-main"
+                      />
+                    ))}
+                  </div>
+                ))}
+
+                <div className="keyboard-row punctuation-keys">
+                  {[".", ",", "!", "?", ";", ":", "'", '"', "-"].map((key) => (
                     <Key
                       key={key}
                       keyValue={key}
                       isFocused={focusedKey === key}
-                      className="key-main"
+                      className="key-punctuation"
                     />
                   ))}
                 </div>
-              ))}
 
-              <div
-                className="keyboard-row punctuation-keys"
-                style={{
-                  height: rowHeights[keyboardLayout.length]
-                    ? `${rowHeights[keyboardLayout.length]}px`
-                    : "auto",
-                  transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              >
-                {[".", ",", "!", "?", ";", ":", "'", '"', "-"].map((key) => (
-                  <Key
-                    key={key}
-                    keyValue={key}
-                    isFocused={focusedKey === key}
-                    className="key-punctuation"
-                  />
-                ))}
-              </div>
-
-              <div
-                className="keyboard-row special-keys"
-                style={{
-                  height: rowHeights[keyboardLayout.length + 1]
-                    ? `${rowHeights[keyboardLayout.length + 1]}px`
-                    : "auto",
-                  transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              >
-                {["SHIFT", "BACKSPACE", "ENTER"].map((key) => (
-                  <Key
-                    key={key}
-                    keyValue={key}
-                    isFocused={focusedKey === key}
-                    className="key-special"
-                  />
-                ))}
-              </div>
-            </>
-          );
-        })()}
-      </div>
+                <div className="keyboard-row special-keys">
+                  {["SHIFT", "BACKSPACE", "ENTER"].map((key) => (
+                    <Key
+                      key={key}
+                      keyValue={key}
+                      isFocused={focusedKey === key}
+                      className="key-special"
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          })()}
+        </div>
       </div>
     </div>
   );
