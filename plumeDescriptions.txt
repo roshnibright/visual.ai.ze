@@ -1,1 +1,10 @@
+**Inspiration**
+One of our team members has a close family friend with nonverbal autism and impaired fine motor skills. Traditional tools like tablets and sign language weren’t viable for him, and existing solutions failed to adapt to his specific needs. His experience motivated us to design a tool that isn’t just functional, but would enhance his day to day life by making his means of communication faster and more convenient.
+
+**What it does**
+Adaptive Hover Keys: Letters enlarge on hover, reducing precision requirements.
+Context-Aware Prediction: Based on typed prefixes (e.g., “sch”), the system predicts likely next letters (“o” or “e”) and enlarges them for easier selection.
+Lightweight & Accessible: Entirely web-based, deployable on iPads or desktops—no specialized devices needed.
+
+**How we built it**
 
