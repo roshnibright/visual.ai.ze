@@ -34,6 +34,21 @@
   width: 60px;
 }
 
+.side-nav.closed .nav-header h3,
+.side-nav.closed .subject-tabs,
+.side-nav.closed .word-display {
+  display: none;
+}
+
+.side-nav.closed .nav-header {
+  justify-content: center;
+  padding: 20px 10px;
+}
+
+.side-nav.closed .nav-toggle {
+  margin: 0;
+}
+
 .dark-mode .side-nav {
   background: rgba(17, 24, 39, 0.95);
   border-color: rgba(75, 85, 99, 0.3);
@@ -71,6 +86,11 @@
   border-radius: 8px;
   transition: all 0.2s ease;
   color: #6b7280;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-toggle:hover {
@@ -873,35 +893,55 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) and (min-width: 768px) {
+@media (max-width: 1024px) and (max-width: 480px) {
   .accessible-keyboard-container {
-    padding: 20px;
+    padding: 12px;
+  }
+
+  .side-nav {
+    width: 260px;
+  }
+
+  .side-nav.closed {
+    width: 45px;
+  }
+
+  .side-nav.closed .nav-header {
+    padding: 15px 5px;
   }
 
   .app-title {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
   }
 
   .keyboard {
-    padding: 24px;
+    padding: 20px;
   }
 
   .key {
-    min-width: 50px;
-    min-height: 50px;
-    font-size: 14px;
-    padding: 12px 16px;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 12px;
+    padding: 8px 12px;
   }
 
   .text-input {
-    font-size: 16px;
-    min-height: 140px;
+    font-size: 14px;
+    min-height: 100px;
   }
 }
 
 @media (max-width: 768px) {
   .accessible-keyboard-container {
     padding: 16px;
+  }
+
+  .side-nav {
+    width: 280px;
+  }
+
+  .side-nav.closed {
+    width: 50px;
   }
 
   .header-controls {

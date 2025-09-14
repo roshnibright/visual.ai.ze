@@ -615,13 +615,13 @@ const AccessibleKeyboard = () => {
       {/* Side Navigation */}
       <div className={`side-nav ${isNavOpen ? "open" : "closed"}`}>
         <div className="nav-header">
-          <h3>Subjects</h3>
+          {isNavOpen && <h3>Subjects</h3>}
           <button
             className="nav-toggle"
             onClick={() => setIsNavOpen(!isNavOpen)}
             aria-label={isNavOpen ? "Close navigation" : "Open navigation"}
           >
-            {isNavOpen ? "←" : "→"}
+            {isNavOpen ? "←" : "📚"}
           </button>
         </div>
 
