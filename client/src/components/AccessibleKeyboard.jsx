@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./AccessibleKeyboard.css";
+import Slider from "./Slider";
 
 const AccessibleKeyboard = () => {
   const [text, setText] = useState("");
@@ -14,6 +15,7 @@ const AccessibleKeyboard = () => {
   const [isNavOpen, setIsNavOpen] = useState(true);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [wordsPerPage] = useState(8); // Number of words to display at once
+  const [duration, setDuration] = useState(1000);
 
   // Subject-specific word sets
   const subjectWords = {
@@ -406,7 +408,7 @@ const AccessibleKeyboard = () => {
 
         // Start animation
         const startTime = Date.now();
-        const duration = 1000; // 1 second
+        // const duration = duration; // 1 second
 
         // Easing function for smooth animation
         const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
@@ -702,6 +704,10 @@ const AccessibleKeyboard = () => {
             <p className="app-subtitle">
               Accessible typing with intelligent predictions
             </p>
+          </div>
+          <div className="flex flex-col items-center p-6 space-y-4">
+            <Slider value={duration} onChange={setDuration} />
+            <p className="text-lg">Current duration: {duration / 1000} seconds</p>
           </div>
           <div className="control-buttons">
             <button

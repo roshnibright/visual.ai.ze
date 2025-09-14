@@ -802,9 +802,9 @@
 }
 
 /* Override for dynamic sizing */
-.key.dynamic-size {
+/* .key.dynamic-size {
   /* Let inline styles take precedence for flex and height */
-}
+ */
 
 /* Override any height constraints for accessible keys */
 .key.accessible {
