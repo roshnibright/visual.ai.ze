@@ -31,27 +31,36 @@ def char_prediction(input_text):
     """
     client = Cerebras(api_key=cerebras_key)
 
-
     if not input_text or not input_text.strip():
         return []
 
     if input_text.endswith((' ', '.', '!', '?', ',', ';', ':')):
         return []
-
-    prompt = char_prompt(input_text)
     try:
         x = time.time()
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=50,
+        completion_create_response = client.chat.completions.create(
             messages=[
-                {"role": "user", "content": prompt}
-            ]
+                {
+                    "role": "system",
+                    "content": char_prompt
+                },
+                {
+                    "role": "user",
+                    "content": f"Previous Context: {input_text}"
+                },
+            ],
+            model="qwen-3-32b",
+            stream=False,
+            max_completion_tokens=5000,
+            temperature=.2,
         )
+
         y = time.time()
         print("Time taken: ", y - x)
 
-        result = response.content[0].text.strip()
+
+        result = completion_create_response.choices[0].message.content.strip()
+        print("the result is: ", result)
 
         try:
             parsed_result = ast.literal_eval(result)
@@ -95,7 +104,7 @@ def word_prediction(input_text, word_list):
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model="qwen-3-32b",
             max_tokens=20,
             messages=[
                 {"role": "user", "content": prompt}
@@ -126,7 +135,7 @@ def word_prediction(input_text, word_list):
 
 if __name__ == "__main__":
 
-    test_cases = ["The cat is sitt"]
+    test_cases = ["Yesterday when I came home from school I a"]
 
     for test in test_cases:
         predictions = char_prediction(test)
