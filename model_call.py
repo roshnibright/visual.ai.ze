@@ -12,10 +12,7 @@ from cerebras.cloud.sdk import Cerebras
 
 
 load_dotenv()
-api_key = os.getenv('ANTHROPIC_KEY')
 cerebras_key = os.getenv('CEREBRAS_KEY')
-if not api_key:
-    raise ValueError("ANTHROPIC_KEY not found in environment variables. Please add it to your .env file.")
 if not cerebras_key:
     raise ValueError("CEREBRAS_KEY not found in environment variables. Please add it to your .env file.")
 
@@ -76,55 +73,6 @@ def char_prediction(input_text):
     except Exception as e:
         print(f"Error calling Anthropic API: {e}")
         return json.dumps([])
-
-
-def word_prediction(input_text, word_list):
-    """
-    Predicts the next likely word from a list of words for an input text using Anthropic's Haiku model.
-
-    Args:
-        input_text (str): A short sentence or text fragment
-        word_list (list): List of words to choose from
-
-    Returns:
-        list: List of recommended next words, or empty list if no recommendation
-    """
-    client = anthropic.Anthropic(api_key=api_key)
-
-    if not input_text or not input_text.strip():
-        return []
-
-    if not word_list or len(word_list) == 0:
-        return []
-
-    word_options = ", ".join(word_list)
-
-    prompt = word_prompt(input_text, word_options)
-
-    try:
-        response = client.messages.create(
-            model="gpt-oss-120b",
-            max_tokens=20,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
-
-
-        result = response.content[0].text.strip()
-        print(result)
-
-        try:
-            parsed_result = ast.literal_eval(result)
-
-            json_result = []
-            for word, confidence in parsed_result:
-                if word in word_list:
-                    json_result.append({"word": word, "confidence": confidence})
-
-            return json.dumps(json_result)
-        except:
-            return json.dumps([])
 
     except Exception as e:
         print(f"Error calling Anthropic API: {e}")
